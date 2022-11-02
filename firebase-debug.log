@@ -1,0 +1,106 @@
+[debug] [2022-11-02T13:34:52.996Z] ----------------------------------------------------------------------
+[debug] [2022-11-02T13:34:52.997Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\hirof\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js emulators:start
+[debug] [2022-11-02T13:34:52.998Z] CLI Version:   11.16.0
+[debug] [2022-11-02T13:34:52.998Z] Platform:      win32
+[debug] [2022-11-02T13:34:52.998Z] Node Version:  v16.17.0
+[debug] [2022-11-02T13:34:52.999Z] Time:          Wed Nov 02 2022 14:34:52 GMT+0100 (Mitteleuropäische Normalzeit)
+[debug] [2022-11-02T13:34:53.000Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-11-02T13:34:53.054Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-11-02T13:34:53.055Z] > authorizing via signed-in user (hirofushikar@gmail.com)
+[debug] [2022-11-02T13:34:53.110Z] openjdk version "17.0.4" 2022-07-19
+OpenJDK Runtime Environment Temurin-17.0.4+8 (build 17.0.4+8)
+
+[debug] [2022-11-02T13:34:53.111Z] OpenJDK 64-Bit Server VM Temurin-17.0.4+8 (build 17.0.4+8, mixed mode, sharing)
+
+[debug] [2022-11-02T13:34:53.123Z] Parsed Java major version: 17
+[info] i  emulators: Starting emulators: auth, database, hosting {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: auth, database, hosting"}}
+[debug] [2022-11-02T13:34:53.135Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2022-11-02T13:34:53.135Z] [auth] Authentication Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2022-11-02T13:34:53.135Z] [database] Database Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2022-11-02T13:34:53.135Z] [hosting] Hosting Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2022-11-02T13:34:53.135Z] assigned listening specs for emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"auth":[{"address":"127.0.0.1","family":"IPv4","port":9099}],"database":[{"address":"127.0.0.1","family":"IPv4","port":9001}],"hosting":[{"address":"127.0.0.1","family":"IPv4","port":5000}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[debug] [2022-11-02T13:34:53.138Z] [hub] writing locator at C:\Users\hirof\AppData\Local\Temp\hub-zettel-909c1.json
+[debug] [2022-11-02T13:34:53.145Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/zettel-909c1 [none]
+[debug] [2022-11-02T13:34:53.496Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/zettel-909c1 200
+[debug] [2022-11-02T13:34:53.496Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/zettel-909c1 {"projectId":"zettel-909c1","projectNumber":"782238195842","displayName":"zettel","name":"projects/zettel-909c1","resources":{"hostingSite":"zettel-909c1","realtimeDatabaseInstance":"zettel-909c1-default-rtdb"},"state":"ACTIVE","etag":"1_53d1c357-e87a-4e1e-88b9-365f22f44aea"}
+[debug] [2022-11-02T13:34:53.496Z] database rules config:  [{"instance":"zettel-909c1-default-rtdb","rules":"C:\\Users\\hirof\\Documents\\bnry\\zettel-app\\database.rules.json"}]
+[debug] [2022-11-02T13:34:53.500Z] Ignoring unsupported arg: projectId {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: projectId"}}
+[debug] [2022-11-02T13:34:53.500Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2022-11-02T13:34:53.500Z] Ignoring unsupported arg: rules {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: rules"}}
+[debug] [2022-11-02T13:34:53.500Z] Starting Database Emulator with command {"binary":"java","args":["-Duser.language=en","-jar","C:\\Users\\hirof\\.cache\\firebase\\emulators\\firebase-database-emulator-v4.11.0.jar","--host","127.0.0.1","--port",9001,"--single_project_mode","Warning"],"optionalArgs":["port","host","functions_emulator_port","functions_emulator_host","single_project_mode"],"joinArgs":false} {"metadata":{"emulator":{"name":"database"},"message":"Starting Database Emulator with command {\"binary\":\"java\",\"args\":[\"-Duser.language=en\",\"-jar\",\"C:\\\\Users\\\\hirof\\\\.cache\\\\firebase\\\\emulators\\\\firebase-database-emulator-v4.11.0.jar\",\"--host\",\"127.0.0.1\",\"--port\",9001,\"--single_project_mode\",\"Warning\"],\"optionalArgs\":[\"port\",\"host\",\"functions_emulator_port\",\"functions_emulator_host\",\"single_project_mode\"],\"joinArgs\":false}"}}
+[info] i  database: Database Emulator logging to database-debug.log {"metadata":{"emulator":{"name":"database"},"message":"Database Emulator logging to \u001b[1mdatabase-debug.log\u001b[22m"}}
+[debug] [2022-11-02T13:34:54.732Z] 14:34:54.731 [NamespaceSystem-akka.actor.default-dispatcher-5] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+ {"metadata":{"emulator":{"name":"database"},"message":"14:34:54.731 [NamespaceSystem-akka.actor.default-dispatcher-5] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started\r\n"}}
+[debug] [2022-11-02T13:34:54.903Z] 14:34:54.904 [main] INFO com.firebase.server.forge.App$ - Listening at 127.0.0.1:9001
+ {"metadata":{"emulator":{"name":"database"},"message":"14:34:54.904 [main] INFO com.firebase.server.forge.App$ - Listening at 127.0.0.1:9001\r\n"}}
+[debug] [2022-11-02T13:35:00.669Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/zettel-909c1/sites 
+[debug] [2022-11-02T13:35:01.689Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/zettel-909c1/sites 200
+[debug] [2022-11-02T13:35:01.689Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/zettel-909c1/sites {"sites":[{"name":"projects/zettel-909c1/sites/zettel-909c1","defaultUrl":"https://zettel-909c1.web.app","appId":"1:782238195842:web:85ff44c8b955bb78de149b","type":"DEFAULT_SITE"}]}
+[debug] [2022-11-02T13:35:01.690Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/zettel-909c1/webApps/1:782238195842:web:85ff44c8b955bb78de149b/config [none]
+[debug] [2022-11-02T13:35:02.807Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/zettel-909c1/webApps/1:782238195842:web:85ff44c8b955bb78de149b/config 200
+[debug] [2022-11-02T13:35:02.807Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/zettel-909c1/webApps/1:782238195842:web:85ff44c8b955bb78de149b/config {"projectId":"zettel-909c1","appId":"1:782238195842:web:85ff44c8b955bb78de149b","databaseURL":"https://zettel-909c1-default-rtdb.europe-west1.firebasedatabase.app","storageBucket":"zettel-909c1.appspot.com","apiKey":"AIzaSyA6if8Qr_xG-2ZkL6UBImUo5Hxi6Og_kUY","authDomain":"zettel-909c1.firebaseapp.com","messagingSenderId":"782238195842"}
+[debug] [2022-11-02T13:35:02.817Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/zettel-909c1 [none]
+[debug] [2022-11-02T13:35:03.119Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/zettel-909c1 200
+[debug] [2022-11-02T13:35:03.120Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/zettel-909c1 {"projectId":"zettel-909c1","projectNumber":"782238195842","displayName":"zettel","name":"projects/zettel-909c1","resources":{"hostingSite":"zettel-909c1","realtimeDatabaseInstance":"zettel-909c1-default-rtdb"},"state":"ACTIVE","etag":"1_53d1c357-e87a-4e1e-88b9-365f22f44aea"}
+[info] i  hosting[zettel-909c1]: Serving hosting files from: public {"metadata":{"emulator":{"name":"hosting"},"message":"Serving hosting files from: \u001b[1mpublic\u001b[22m"}}
+[info] +  hosting[zettel-909c1]: Local server: http://127.0.0.1:5000 {"metadata":{"emulator":{"name":"hosting"},"message":"Local server: \u001b[4m\u001b[1mhttp://127.0.0.1:5000\u001b[22m\u001b[24m"}}
+[debug] [2022-11-02T13:35:03.142Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2022-11-02T13:35:03.142Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2022-11-02T13:35:03.142Z] Starting Emulator UI with command {"binary":"node","args":["C:\\Users\\hirof\\.cache\\firebase\\emulators\\ui-v1.11.1\\server\\server.js"],"optionalArgs":[],"joinArgs":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"C:\\\\Users\\\\hirof\\\\.cache\\\\firebase\\\\emulators\\\\ui-v1.11.1\\\\server\\\\server.js\"],\"optionalArgs\":[],\"joinArgs\":false}"}}
+[info] i  ui: Emulator UI logging to ui-debug.log {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI logging to \u001b[1mui-debug.log\u001b[22m"}}
+[debug] [2022-11-02T13:35:03.274Z] Web / API server started at 127.0.0.1:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at 127.0.0.1:4000\n"}}
+[debug] [2022-11-02T13:35:03.274Z] Web / API server started at ::1:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at ::1:4000\n"}}
+[debug] [2022-11-02T13:35:03.414Z] >>> [apiv2][query] PUT http://127.0.0.1:9001/.settings/rules.json ns=zettel-909c1-default-rtdb
+[debug] [2022-11-02T13:35:03.414Z] >>> [apiv2][body] PUT http://127.0.0.1:9001/.settings/rules.json "{\n  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */\n  \"rules\": {\n    \".read\": false,\n    \".write\": false\n  }\n}"
+[debug] [2022-11-02T13:35:03.733Z] 14:35:03.733 [NamespaceSystem-akka.actor.default-dispatcher-6] INFO com.firebase.core.namespace.NamespaceActor - zettel-909c1-default-rtdb successfully activated FBKV (SurveyIdle(0)) wait: 137ms, init: 0ms
+ {"metadata":{"emulator":{"name":"database"},"message":"14:35:03.733 [NamespaceSystem-akka.actor.default-dispatcher-6] INFO com.firebase.core.namespace.NamespaceActor - zettel-909c1-default-rtdb successfully activated FBKV (SurveyIdle(0)) wait: 137ms, init: 0ms\r\n"}}
+[debug] [2022-11-02T13:35:03.805Z] 14:35:03.805 [NamespaceSystem-blocking-namespace-operation-dispatcher-8] INFO com.firebase.core.namespace.StateManager - Namespace zettel-909c1-default-rtdb status Active to Active
+ {"metadata":{"emulator":{"name":"database"},"message":"14:35:03.805 [NamespaceSystem-blocking-namespace-operation-dispatcher-8] INFO com.firebase.core.namespace.StateManager - Namespace zettel-909c1-default-rtdb status Active to Active\r\n"}}
+[debug] [2022-11-02T13:35:03.859Z] <<< [apiv2][status] PUT http://127.0.0.1:9001/.settings/rules.json 200
+[debug] [2022-11-02T13:35:03.859Z] <<< [apiv2][body] PUT http://127.0.0.1:9001/.settings/rules.json {"status":"ok"}
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://127.0.0.1:4000/               │
+└─────────────────────────────────────────────────────────────┘
+
+┌────────────────┬────────────────┬────────────────────────────────┐
+│ Emulator       │ Host:Port      │ View in Emulator UI            │
+├────────────────┼────────────────┼────────────────────────────────┤
+│ Authentication │ 127.0.0.1:9099 │ http://127.0.0.1:4000/auth     │
+├────────────────┼────────────────┼────────────────────────────────┤
+│ Database       │ 127.0.0.1:9001 │ http://127.0.0.1:4000/database │
+├────────────────┼────────────────┼────────────────────────────────┤
+│ Hosting        │ 127.0.0.1:5000 │ n/a                            │
+└────────────────┴────────────────┴────────────────────────────────┘
+  Emulator Hub running at 127.0.0.1:4400
+  Other reserved ports: 4500
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
+[warn] !  Received a signed JWT. Auth Emulator does not validate JWTs and IS NOT SECURE {"metadata":{"emulator":{"name":"auth"},"message":"Received a signed JWT. Auth Emulator does not validate JWTs and IS NOT SECURE"}}
+[debug] [2022-11-02T13:50:36.061Z] 14:50:36.061 [FirebaseWorkerPool-1-3] WARN com.firebase.core.persistence.backend.dummy.EmulatorMetadataPersistence - Multiple projectIds are not recommended in single project mode. Requested 
+namespace zettel-909c1, but the emulator is configured for zettel-909c1-default-rtdb. To 
+opt-out of single project mode add/set the single_project_mode: false property in 
+the firebase.json emulators config. 
+ {"metadata":{"emulator":{"name":"database"},"message":"14:50:36.061 [FirebaseWorkerPool-1-3] WARN com.firebase.core.persistence.backend.dummy.EmulatorMetadataPersistence - Multiple projectIds are not recommended in single project mode. Requested \nnamespace zettel-909c1, but the emulator is configured for zettel-909c1-default-rtdb. To \nopt-out of single project mode add/set the single_project_mode: false property in \nthe firebase.json emulators config. \r\n"}}
+[debug] [2022-11-02T13:50:36.069Z] 14:50:36.069 [NamespaceSystem-akka.actor.default-dispatcher-12] INFO com.firebase.core.namespace.NamespaceActor - zettel-909c1 successfully activated FBKV (SurveyIdle(0)) wait: 4ms, init: 0ms
+ {"metadata":{"emulator":{"name":"database"},"message":"14:50:36.069 [NamespaceSystem-akka.actor.default-dispatcher-12] INFO com.firebase.core.namespace.NamespaceActor - zettel-909c1 successfully activated FBKV (SurveyIdle(0)) wait: 4ms, init: 0ms\r\n"}}
+[info] i  database: Change detected, updating rules for zettel-909c1-default-rtdb... {"metadata":{"emulator":{"name":"database"},"message":"Change detected, updating rules for zettel-909c1-default-rtdb..."}}
+[debug] [2022-11-02T17:58:04.758Z] >>> [apiv2][query] PUT http://127.0.0.1:9001/.settings/rules.json ns=zettel-909c1-default-rtdb
+[debug] [2022-11-02T17:58:04.758Z] >>> [apiv2][body] PUT http://127.0.0.1:9001/.settings/rules.json "{\n  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */\n  \"rules\": {\n    \".read\": true,\n    \".write\": true\n  }\n}\n"
+[debug] [2022-11-02T17:58:04.787Z] 18:58:04.783 [NamespaceSystem-blocking-namespace-operation-dispatcher-56] INFO com.firebase.core.namespace.StateManager - Namespace zettel-909c1-default-rtdb status Active to Active
+ {"metadata":{"emulator":{"name":"database"},"message":"18:58:04.783 [NamespaceSystem-blocking-namespace-operation-dispatcher-56] INFO com.firebase.core.namespace.StateManager - Namespace zettel-909c1-default-rtdb status Active to Active\r\n"}}
+[debug] [2022-11-02T17:58:04.799Z] <<< [apiv2][status] PUT http://127.0.0.1:9001/.settings/rules.json 200
+[debug] [2022-11-02T17:58:04.799Z] <<< [apiv2][body] PUT http://127.0.0.1:9001/.settings/rules.json {"status":"ok"}
+[info] +  database: Rules updated. {"metadata":{"emulator":{"name":"database"},"message":"Rules updated."}}
+[debug] [2022-11-02T17:58:17.543Z] 18:58:17.544 [FirebaseWorkerPool-1-3] WARN com.firebase.core.persistence.backend.dummy.EmulatorMetadataPersistence - Multiple projectIds are not recommended in single project mode. Requested 
+namespace 127, but the emulator is configured for zettel-909c1,zettel-909c1-default-rtdb. To 
+opt-out of single project mode add/set the single_project_mode: false property in 
+the firebase.json emulators config. 
+ {"metadata":{"emulator":{"name":"database"},"message":"18:58:17.544 [FirebaseWorkerPool-1-3] WARN com.firebase.core.persistence.backend.dummy.EmulatorMetadataPersistence - Multiple projectIds are not recommended in single project mode. Requested \nnamespace 127, but the emulator is configured for zettel-909c1,zettel-909c1-default-rtdb. To \nopt-out of single project mode add/set the single_project_mode: false property in \nthe firebase.json emulators config. \r\n"}}
+[debug] [2022-11-02T17:58:17.553Z] 18:58:17.553 [NamespaceSystem-akka.actor.default-dispatcher-61] INFO com.firebase.core.namespace.NamespaceActor - 127 successfully activated FBKV (SurveyIdle(0)) wait: 4ms, init: 0ms
+ {"metadata":{"emulator":{"name":"database"},"message":"18:58:17.553 [NamespaceSystem-akka.actor.default-dispatcher-61] INFO com.firebase.core.namespace.NamespaceActor - 127 successfully activated FBKV (SurveyIdle(0)) wait: 4ms, init: 0ms\r\n"}}
