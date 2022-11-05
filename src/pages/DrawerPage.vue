@@ -1,8 +1,18 @@
 <template>
-  <div class="q-ma-md">
+  <div class="q-ma-md column items-center">
     <h2>Drawer</h2>
     <div v-if="signedIn">
       <div v-if="!loadingZettels">
+        <div v-if="zettels.length == 0" class="text-primary row items-center">
+          No Zettels found. Click
+          <q-btn
+            color="primary"
+            label="here"
+            @click="newZettel = true"
+            class="q-mx-xs"
+          />
+          to create one.
+        </div>
         <q-card v-for="zettel in zettels" :key="zettel.id" class="bg-secondary">
           <q-card-section class="text-h6 row justify-between items-center">
             {{ zettel.title }}
@@ -34,7 +44,13 @@
           </q-card-section>
           <q-card-section>
             <div class="row justify-between">
-              <div>by <q-avatar :icon="ownerIcons[zettel.owner]" /></div>
+              <div>
+                by
+                <q-avatar
+                  :icon="ownerIcons[zettel.owner]"
+                  :alt="zettel.owner"
+                />
+              </div>
             </div>
           </q-card-section>
         </q-card>
@@ -148,8 +164,8 @@ function fetchZettels() {
             ownerIcons.value[zettel.owner] = icon;
           });
         });
-        loadingZettels.value = false;
       }
+      loadingZettels.value = false;
     });
   }
 }

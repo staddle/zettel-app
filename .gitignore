@@ -32,3 +32,6 @@ yarn-error.log*
 *.njsproj
 *.sln
 src/assets/firebaseConfig.js
+ui-debug.log
+firebase-debug.log
+ui-debug.log

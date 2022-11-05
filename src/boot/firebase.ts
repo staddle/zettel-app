@@ -37,10 +37,7 @@ const uiConfig = {
     signInSuccessWithAuthResult: function (
       authResult: UserCredential
     ): boolean {
-      const newUserRef = push(
-        ref(firebaseDatabase, 'users/' + authResult.user.uid)
-      );
-      set(newUserRef, {
+      set(ref(firebaseDatabase, `users/${authResult.user.uid}`), {
         displayName: authResult.user.displayName,
         email: authResult.user.email,
         photoURL: authResult.user.photoURL,
