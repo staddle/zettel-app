@@ -1,27 +1,52 @@
 import { RouteRecordRaw } from 'vue-router';
+import MainLayout from 'layouts/MainLayout.vue';
+import IndexPage from 'pages/IndexPage.vue';
+import SignInPage from 'pages/SignInPage.vue';
+import SignInSuccessPage from 'pages/SignInSuccessPage.vue';
+import DrawerPage from 'pages/DrawerPage.vue';
+import ZettelPage from 'pages/ZettelPage.vue';
+import ErrorNotFound from 'pages/ErrorNotFound.vue';
+import ZettelLayout from 'src/layouts/ZettelLayout.vue';
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/IndexPage.vue') }],
+    component: MainLayout,
+    children: [{ path: '', name: 'Home', component: IndexPage }],
   },
   {
     path: '/sign-in',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/SignInPage.vue') }],
+    component: MainLayout,
+    children: [{ path: '', name: 'SignIn', component: SignInPage }],
+  },
+  {
+    path: '/success',
+    component: MainLayout,
+    children: [
+      {
+        path: '',
+        name: 'SignInSuccess',
+        component: SignInSuccessPage,
+      },
+    ],
   },
   {
     path: '/drawer',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/DrawerPage.vue') }],
+    component: MainLayout,
+    children: [{ path: '', name: 'Drawer', component: DrawerPage }],
+  },
+  {
+    path: '/zettel/:zettelID',
+    component: ZettelLayout,
+    props: true,
+    children: [{ path: '', name: 'Zettel', component: ZettelPage }],
   },
 
   // Always leave this as last one,
   // but you can also remove it
   {
     path: '/:catchAll(.*)*',
-    component: () => import('pages/ErrorNotFound.vue'),
+    component: ErrorNotFound,
   },
 ];
 

@@ -17,7 +17,6 @@
 <script lang="ts" setup>
 import { onAuthStateChanged } from '@firebase/auth';
 import { firebaseAuth } from 'boot/firebase';
-import { sign } from 'crypto';
 import { ref } from 'vue';
 
 const signedIn = ref(false);

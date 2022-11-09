@@ -1,5 +1,6 @@
 import { child, get, ref } from 'firebase/database';
 import { firebaseDatabase } from 'boot/firebase';
+import { User } from 'src/model/User';
 
 async function getAvatarFromDB(
   userID: string,
@@ -18,9 +19,21 @@ async function getAvatarFromDB(
 
 function getAvatar(userName?: string): string {
   return userName != undefined && userName != ''
-    ? 'https://ui-avatars.com/api/?length=1&rounded=true&background=e63946&color=ffffff&name=' +
+    ? 'https://ui-avatars.com/api/?length=2&rounded=true&background=e63946&color=ffffff&name=' +
         userName
-    : 'https://ui-avatars.com/api/?length=1&rounded=true&background=e63946&color=ffffff';
+    : 'https://ui-avatars.com/api/?length=2&rounded=true&background=e63946&color=ffffff';
 }
 
-export { getAvatar, getAvatarFromDB };
+async function getUserFromDB(userID: string): Promise<User> {
+  return await get(child(ref(firebaseDatabase), `users/${userID}`)).then(
+    (snapshot) => {
+      if (snapshot.exists()) {
+        return snapshot.val();
+      } else {
+        return null;
+      }
+    }
+  );
+}
+
+export { getAvatar, getAvatarFromDB, getUserFromDB };

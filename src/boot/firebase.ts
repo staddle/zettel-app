@@ -11,12 +11,12 @@ import {
 import {
   connectDatabaseEmulator,
   getDatabase,
-  push,
   ref,
   set,
 } from 'firebase/database';
 import * as firebaseui from 'firebaseui';
 import { User } from 'src/model/User';
+import { useRouter } from 'vue-router';
 
 const firebaseApp = initializeApp(firebaseConfig);
 const firebaseAuth = getAuth(firebaseApp);
@@ -32,16 +32,19 @@ if (location.hostname === 'localhost') {
 }
 
 const uiConfig = {
-  signInSuccessUrl: '/',
+  signInSuccessUrl: '/#/success',
   callbacks: {
     signInSuccessWithAuthResult: function (
       authResult: UserCredential
     ): boolean {
-      set(ref(firebaseDatabase, `users/${authResult.user.uid}`), {
+      console.log('signInSuccessWithAuthResult');
+      const user = {
         displayName: authResult.user.displayName,
         email: authResult.user.email,
         photoURL: authResult.user.photoURL,
-      } as User);
+      } as User;
+      const dbRef = ref(firebaseDatabase, `users/${authResult.user.uid}`);
+      set(dbRef, user);
       return true;
     },
   },
