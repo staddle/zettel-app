@@ -29,6 +29,7 @@ onAuthStateChanged(firebaseAuth, (user) => {
         console.log('No user data available, creating new...');
         const authResult = snapshot.val();
         const user = {
+          uid: authResult.uid,
           displayName: authResult.displayName,
           email: authResult.email,
           photoURL: authResult.photoURL,

@@ -1,8 +1,11 @@
 <template>
   <q-layout>
-    <q-page-container>
-      <h1>{{ zettel.title }}</h1>
-      <router-view></router-view>
+    <q-page-container class="column items-center">
+      <h2>{{ zettel.title }}</h2>
+      <h5>by {{ zettel.owner }}</h5>
+      <div class="row items-center justify-center">
+        <router-view></router-view>
+      </div>
     </q-page-container>
   </q-layout>
 </template>
@@ -29,7 +32,7 @@ provide('zettel', zettel);
 onAuthStateChanged(firebaseAuth, async (signedInUser) => {
   if (signedInUser) {
     uid.value = signedInUser.uid;
-    await ZettelActions.get(uid.value, zettelID.value).then((z) => {
+    await ZettelActions.onZettel(uid.value, zettelID.value, (z) => {
       zettel.value = z ?? ({} as Zettel);
     });
     getUserFromDB(signedInUser.uid).then((user2) => {

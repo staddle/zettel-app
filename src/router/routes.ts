@@ -12,34 +12,36 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: MainLayout,
-    children: [{ path: '', name: 'Home', component: IndexPage }],
-  },
-  {
-    path: '/sign-in',
-    component: MainLayout,
-    children: [{ path: '', name: 'SignIn', component: SignInPage }],
-  },
-  {
-    path: '/success',
-    component: MainLayout,
     children: [
+      { path: '', name: 'Home', component: IndexPage },
       {
-        path: '',
+        path: '/sign-in',
+        name: 'SignIn',
+        component: SignInPage,
+      },
+      {
+        path: '/success',
         name: 'SignInSuccess',
         component: SignInSuccessPage,
       },
+      {
+        path: '/drawer',
+        name: 'Drawer',
+        component: DrawerPage,
+      },
+      {
+        path: '/zettel/:zettelID',
+        component: ZettelLayout,
+        props: true,
+        children: [
+          {
+            path: '',
+            name: 'Zettel',
+            component: ZettelPage,
+          },
+        ],
+      },
     ],
-  },
-  {
-    path: '/drawer',
-    component: MainLayout,
-    children: [{ path: '', name: 'Drawer', component: DrawerPage }],
-  },
-  {
-    path: '/zettel/:zettelID',
-    component: ZettelLayout,
-    props: true,
-    children: [{ path: '', name: 'Zettel', component: ZettelPage }],
   },
 
   // Always leave this as last one,
