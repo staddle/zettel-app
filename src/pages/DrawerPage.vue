@@ -210,7 +210,6 @@ function fetchZettels() {
 
 function assignZettels(snapshot: DataSnapshot) {
   if (snapshot.exists()) {
-    console.log(snapshot.val());
     zettels.value = Object.values(snapshot.val());
     zettels.value.forEach(async (zettel) => {
       owners.value[zettel.owner] = await getOwnerDetails(zettel.owner);

@@ -37,8 +37,8 @@ const uiConfig = {
     signInSuccessWithAuthResult: function (
       authResult: UserCredential
     ): boolean {
-      console.log('signInSuccessWithAuthResult');
       const user = {
+        uid: authResult.user.uid,
         displayName: authResult.user.displayName,
         email: authResult.user.email,
         photoURL: authResult.user.photoURL,

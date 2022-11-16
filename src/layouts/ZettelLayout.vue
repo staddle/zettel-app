@@ -15,31 +15,23 @@ import { Zettel } from 'src/model/Zettel';
 import { provide, Ref, ref, toRefs } from 'vue';
 import * as ZettelActions from 'assets/ZettelActions';
 import { User } from 'src/model/User';
-import { onAuthStateChanged } from '@firebase/auth';
-import { firebaseAuth } from 'boot/firebase';
-import { getUserFromDB } from 'src/assets/UserActions';
+import { useUserStore } from 'src/stores/userStore';
 
 const props = defineProps<{ zettelID: string }>();
 
 const { zettelID } = toRefs(props);
 const zettel: Ref<Zettel> = ref({} as Zettel);
 const user = ref({} as User);
-const uid = ref('');
 
-provide('user', user);
 provide('zettel', zettel);
 
-onAuthStateChanged(firebaseAuth, async (signedInUser) => {
-  if (signedInUser) {
-    uid.value = signedInUser.uid;
-    await ZettelActions.onZettel(uid.value, zettelID.value, (z) => {
-      zettel.value = z ?? ({} as Zettel);
-    });
-    getUserFromDB(signedInUser.uid).then((user2) => {
-      user.value = user2;
-    });
-  }
-});
+if (useUserStore().signedIn) {
+  user.value = useUserStore().user;
+  console.log(user.value.uid);
+  await ZettelActions.onZettel(user.value.uid, zettelID.value, (z) => {
+    zettel.value = z ?? ({} as Zettel);
+  });
+}
 </script>
 
 <style></style>

@@ -15,16 +15,15 @@
 
 <script setup lang="ts">
 import ZettelItem from 'src/components/ZettelItem.vue';
-import { User } from 'src/model/User';
 import { Zettel } from 'src/model/Zettel';
-import { inject, Ref, ref } from 'vue';
+import { inject, Ref } from 'vue';
 import * as ZettelActions from 'assets/ZettelActions';
+import { useUserStore } from 'src/stores/userStore';
 
 const zettel: Ref<Zettel> = inject('zettel') as Ref<Zettel>;
-const user = inject('user') as Ref<User>;
 
 function newItem() {
-  ZettelActions.newItem(user.value.uid, zettel.value.id);
+  ZettelActions.newItem(useUserStore().user.uid, zettel.value.id);
 }
 </script>
 

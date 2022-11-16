@@ -1,5 +1,5 @@
 import { get as dbGet, onValue, push, ref, set } from '@firebase/database';
-import firebase, { firebaseDatabase } from 'boot/firebase';
+import { firebaseDatabase } from 'boot/firebase';
 import { Item, Zettel } from 'src/model/Zettel';
 
 export async function get(
@@ -34,6 +34,8 @@ export async function onZettel(
 }
 
 export function newItem(uid: string, zettelID: string): void {
-  const pushRef = push(ref(firebaseDatabase, `zettels/${uid}/${zettelID}`));
+  const pushRef = push(
+    ref(firebaseDatabase, `zettels/${uid}/${zettelID}/items`)
+  );
   set(pushRef, { id: pushRef.key } as Item);
 }
