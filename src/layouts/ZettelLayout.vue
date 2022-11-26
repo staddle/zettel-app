@@ -1,9 +1,12 @@
 <template>
   <q-layout>
-    <q-page-container class="column items-center">
-      <h2>{{ zettel.title }}</h2>
-      <h5>by {{ zettel.owner }}</h5>
-      <div class="row items-center justify-center">
+    <q-page-container class="column full-height">
+      <div class="row">
+        <div>{{ zettel.title }}</div>
+        <div>by {{ user.displayName }}</div>
+      </div>
+      <q-separator />
+      <div class="row flex-center">
         <router-view></router-view>
       </div>
     </q-page-container>

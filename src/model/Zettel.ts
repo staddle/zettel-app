@@ -2,6 +2,7 @@ export type Zettel = {
   id: string;
   title: string;
   owner: string;
+  done: boolean;
   invitees: string[];
   items: Item[];
 };
@@ -11,6 +12,7 @@ export type Item = {
   name: string;
   itemType: ItemType;
   store: Store;
+  done: boolean;
 };
 
 export type ItemType = {

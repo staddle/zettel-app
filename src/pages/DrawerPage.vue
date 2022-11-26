@@ -1,6 +1,6 @@
 <template>
   <div class="q-ma-md column items-center">
-    <q-pull-to-refresh @refresh="refreshZettels">
+    <q-pull-to-refresh class="full-width" @refresh="refreshZettels">
       <h2>Drawer</h2>
       <div v-if="signedIn">
         <div v-if="!loadingZettels">
@@ -296,6 +296,7 @@ function selectZettel(zettel: Zettel) {
 
 .zettel-card {
   position: relative;
+  width: 100%;
 }
 
 .zettel-card:hover .backdrop {
