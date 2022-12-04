@@ -16,7 +16,9 @@ import { set } from 'firebase/database';
 import { User } from 'src/model/User';
 import { useUserStore } from 'src/stores/userStore';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const signedIn = ref(false);
 
 onAuthStateChanged(firebaseAuth, (user) => {
@@ -27,7 +29,6 @@ onAuthStateChanged(firebaseAuth, (user) => {
         const user = snapshot.val();
         console.log(`${user.displayName} is signed in`);
         useUserStore().logIn(user);
-        console.log(useUserStore().user.uid);
       } else {
         console.log('No user data available, creating new...');
         const authResult = snapshot.val();
@@ -43,6 +44,7 @@ onAuthStateChanged(firebaseAuth, (user) => {
           useUserStore().logIn(user2);
         });
       }
+      router.push('/');
     });
   } else {
     signedIn.value = false;

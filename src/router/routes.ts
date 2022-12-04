@@ -1,19 +1,20 @@
 import { RouteRecordRaw } from 'vue-router';
 import MainLayout from 'layouts/MainLayout.vue';
-import IndexPage from 'pages/IndexPage.vue';
 import SignInPage from 'pages/SignInPage.vue';
 import SignInSuccessPage from 'pages/SignInSuccessPage.vue';
 import DrawerPage from 'pages/DrawerPage.vue';
 import ZettelPage from 'pages/ZettelPage.vue';
 import ErrorNotFound from 'pages/ErrorNotFound.vue';
 import ZettelLayout from 'src/layouts/ZettelLayout.vue';
+import NotImplementedPage from 'src/pages/NotImplementedPage.vue';
+import ProfilePage from 'src/pages/ProfilePage.vue';
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: MainLayout,
     children: [
-      { path: '', name: 'Home', component: IndexPage },
+      { path: '', name: 'Home', component: DrawerPage },
       {
         path: '/sign-in',
         name: 'SignIn',
@@ -25,19 +26,35 @@ const routes: RouteRecordRaw[] = [
         component: SignInSuccessPage,
       },
       {
-        path: '/drawer',
-        name: 'Drawer',
-        component: DrawerPage,
+        path: '/search',
+        name: 'Search',
+        component: NotImplementedPage,
       },
       {
-        path: '/zettel/:zettelID',
-        component: ZettelLayout,
-        props: true,
+        path: '/user',
+        name: 'User',
+        component: ProfilePage,
+      },
+      {
+        path: '/zettel',
+        name: 'Zettel',
         children: [
           {
             path: '',
-            name: 'Zettel',
-            component: ZettelPage,
+            name: 'Drawer',
+            component: DrawerPage,
+          },
+          {
+            path: ':zettelID',
+            component: ZettelLayout,
+            props: true,
+            children: [
+              {
+                path: '',
+                name: 'Zettel',
+                component: ZettelPage,
+              },
+            ],
           },
         ],
       },
