@@ -1,20 +1,8 @@
 import { boot } from 'quasar/wrappers';
 import { initializeApp } from 'firebase/app';
 import firebaseConfig from '../assets/firebaseConfig';
-import {
-  connectAuthEmulator,
-  EmailAuthProvider,
-  getAuth,
-  GoogleAuthProvider,
-  UserCredential,
-} from 'firebase/auth';
-import {
-  connectDatabaseEmulator,
-  getDatabase,
-  push,
-  ref,
-  set,
-} from 'firebase/database';
+import { connectAuthEmulator, EmailAuthProvider, getAuth, GoogleAuthProvider, UserCredential } from 'firebase/auth';
+import { connectDatabaseEmulator, getDatabase, ref, set } from 'firebase/database';
 import * as firebaseui from 'firebaseui';
 import { User } from 'src/model/User';
 
@@ -32,16 +20,17 @@ if (location.hostname === 'localhost') {
 }
 
 const uiConfig = {
-  signInSuccessUrl: '/',
+  signInSuccessUrl: '/#/success',
   callbacks: {
-    signInSuccessWithAuthResult: function (
-      authResult: UserCredential
-    ): boolean {
-      set(ref(firebaseDatabase, `users/${authResult.user.uid}`), {
+    signInSuccessWithAuthResult: function (authResult: UserCredential): boolean {
+      const user = {
+        uid: authResult.user.uid,
         displayName: authResult.user.displayName,
         email: authResult.user.email,
         photoURL: authResult.user.photoURL,
-      } as User);
+      } as User;
+      const dbRef = ref(firebaseDatabase, `users/${authResult.user.uid}`);
+      set(dbRef, user);
       return true;
     },
   },

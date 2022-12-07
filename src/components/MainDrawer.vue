@@ -24,6 +24,7 @@
 <script lang="ts" setup>
 import { toRefs } from 'vue';
 import { firebaseAuth } from 'boot/firebase';
+import { useUserStore } from 'src/stores/userStore';
 
 export interface Props {
   userName: string;
@@ -38,7 +39,9 @@ const emit = defineEmits<{
 }>();
 
 async function signOut() {
-  await firebaseAuth.signOut();
+  await firebaseAuth.signOut().then(() => {
+    useUserStore().logOut();
+  });
   emit('close');
 }
 </script>

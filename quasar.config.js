@@ -28,7 +28,7 @@ module.exports = configure(function (/* ctx */) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
-    boot: ['i18n', 'firebase'],
+    boot: ['i18n', 'firebase', 'indexedDBSync'],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
     css: ['app.scss', '~firebaseui/dist/firebaseui.css'],
@@ -102,12 +102,15 @@ module.exports = configure(function (/* ctx */) {
           accent: '#e63946',
 
           dark: '#1d1d1d',
-          'dark-page': '#121212',
+          'dark-page': '#1b1d21',
 
           positive: '#7be393',
           negative: '#c25f6a',
           info: '#f1faee',
           warning: '#f2d88f',
+        },
+        notify: {
+          /* options */
         },
       },
 
@@ -122,7 +125,7 @@ module.exports = configure(function (/* ctx */) {
       // directives: [],
 
       // Quasar plugins
-      plugins: [],
+      plugins: ['Notify'],
     },
 
     // animations: 'all', // --- includes all animations
