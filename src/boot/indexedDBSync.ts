@@ -5,7 +5,7 @@ let idb: IDBDatabase;
 let dbPromise: Promise<IDBDatabase>;
 
 export default boot(async (/*{ app }*/) => {
-  const request: IDBOpenDBRequest = indexedDB.open(dbName, 2);
+  const request: IDBOpenDBRequest = indexedDB.open(dbName, 3);
   request.onerror = (event) => {
     console.log('Error opening database', event);
   };
@@ -18,6 +18,9 @@ export default boot(async (/*{ app }*/) => {
       }
       if (event.oldVersion < 2) {
         localDB.createObjectStore('stores', { keyPath: 'id' });
+      }
+      if (event.oldVersion < 3) {
+        localDB.createObjectStore('settings', { keyPath: 'id' });
       }
 
       resolve(localDB);

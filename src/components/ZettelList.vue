@@ -6,23 +6,23 @@
         <q-btn color="primary" label="here" @click="emit('newZettel')" class="q-mx-xs" />
         to create one.
       </div>
-      <q-card v-for="zettel in zettels" :key="zettel.id" class="bg-secondary zettel-card q-mb-md">
+      <q-card v-for="zettel in zettels" :key="zettel.id" class="zettel-card q-mb-md text-white bg-primary">
         <div class="backdrop" @click="selectZettel(zettel)"></div>
         <q-card-section class="text-h6 row justify-between items-center">
           <span class="z-2">{{ zettel.title }}</span>
           <q-btn color="grey-7 z-2" round flat icon="more_vert">
             <q-menu cover auto-close>
               <q-list>
-                <q-item clickable class="items-center">
-                  <q-icon name="fas fa-pen-to-square" class="q-pr-xs"></q-icon>
-                  <q-item-section><router-link :to="`/zettel/${zettel.id}`">Edit</router-link></q-item-section>
+                <q-item clickable class="items-center" @click="selectZettel(zettel)">
+                  <q-icon name="fas fa-pen-to-square" class="q-pr-sm"></q-icon>
+                  <q-item-section>Edit</q-item-section>
                 </q-item>
-                <q-item clickable class="items-center">
-                  <q-icon name="fas fa-share" class="q-pr-xs"></q-icon>
+                <q-item clickable disable class="items-center">
+                  <q-icon name="fas fa-share" class="q-pr-sm"></q-icon>
                   <q-item-section>Share</q-item-section>
                 </q-item>
                 <q-item clickable class="items-center" @click="onDeleteZettel(zettel)">
-                  <q-icon name="fas fa-trash" class="q-pr-xs"></q-icon>
+                  <q-icon name="fas fa-trash" class="q-pr-sm"></q-icon>
                   <q-item-section>Delete</q-item-section>
                 </q-item>
               </q-list>
@@ -56,6 +56,7 @@ import { useUserStore } from 'src/stores/userStore';
 import { onMounted, Ref, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import UserAvatar from './UserAvatar.vue';
+import { useQuasar } from 'quasar';
 
 const router = useRouter();
 onMounted(fetchZettels);
@@ -71,6 +72,8 @@ const emit = defineEmits<{
   (event: 'newZettel'): void;
   (event: 'deleteZettel', zettel: Zettel): void;
 }>();
+
+const $q = useQuasar();
 
 function fetchZettels() {
   if (signedIn()) {
@@ -129,6 +132,7 @@ function selectZettel(zettel: Zettel) {
 .zettel-card {
   position: relative;
   width: 100%;
+  border-radius: 0.7rem;
 }
 
 .zettel-card:hover .backdrop {

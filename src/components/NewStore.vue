@@ -1,25 +1,24 @@
 <template>
   <q-dialog v-model="dialogOpen">
-    <form @submit.prevent.stop="onSubmit()" @reset.prevent.stop="onReset()" class="z-top">
-      <q-card>
-        <q-card-section>
-          <div class="text-h6">Add Store</div>
-        </q-card-section>
-        <q-card-section>
-          <q-input
-            ref="nameInput"
-            v-model="name"
-            autofocus
-            label="Store"
-            :rules="[(val) => val.length > 1 || 'Please give a name.']"
-          />
-        </q-card-section>
-        <q-card-actions align="right">
-          <q-btn flat label="Cancel" type="reset" v-close-popup />
-          <q-btn flat label="Add" color="primay" type="submit" v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </form>
+    <q-card>
+      <q-card-section>
+        <div class="text-h6">Add Store</div>
+      </q-card-section>
+      <q-card-section>
+        <q-input
+          ref="nameInput"
+          v-model="name"
+          autofocus
+          outlined
+          label="Name"
+          :rules="[(val) => val.length > 0 || 'Please give a name.']"
+        />
+      </q-card-section>
+      <q-card-actions align="right">
+        <q-btn push label="Cancel" @click="onReset()" />
+        <q-btn push label="Add" color="primary" @click="onSubmit()" v-close-popup />
+      </q-card-actions>
+    </q-card>
   </q-dialog>
 </template>
 

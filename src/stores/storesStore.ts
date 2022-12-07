@@ -1,39 +1,49 @@
 import { defineStore } from 'pinia';
-import { getStores, getUserStores, onStoresIDB } from 'src/assets/ZettelActions';
+import { getStores as getDefaultStores, getUserStores, onStoresIDB } from 'src/assets/ZettelActions';
 import { Store } from 'src/model/Zettel';
+import { onMounted } from 'vue';
+import { useUserStore } from './userStore';
+
+const storeUpdateCallbacks = [] as ((s: Store[]) => void)[];
+const userStore = useUserStore();
+
+function notifyAllStoreCallbacks(): void {
+  storeUpdateCallbacks.forEach((callback) => callback(useStoresStore().getStores));
+}
+
+onMounted(() => {
+  const storesStore = useStoresStore(); //TODO what if user signs in after this?
+  if (userStore.signedIn) {
+    getDefaultStores((s) => {
+      storesStore.defaultStores = s;
+      notifyAllStoreCallbacks();
+    });
+    getUserStores(userStore.uid, (s) => {
+      storesStore.stores = s;
+      notifyAllStoreCallbacks();
+    });
+  } else {
+    onStoresIDB((s: Store[]) => {
+      storesStore.stores = s;
+      notifyAllStoreCallbacks();
+    });
+  }
+});
 
 export const useStoresStore = defineStore('store', {
   state: () => ({
-    stores: new Set<Store>(),
-    storeUpdateCallbacks: [] as ((s: Store[]) => void)[],
+    stores: [] as Store[],
+    defaultStores: [] as Store[],
   }),
   getters: {
     getStores(): Store[] {
-      return Array.from(this.stores);
+      return this.stores.concat(this.defaultStores);
     },
   },
   actions: {
     keepUpdatingStores(uid: string, callback: (s: Store[]) => void): void {
-      this.storeUpdateCallbacks.push(callback);
-      if (uid !== '') {
-        getStores((s) => {
-          s.forEach((el) => this.stores.add(el));
-          this.notifyAllStoreCallbacks();
-        });
-        getUserStores(uid, (s) => {
-          s.forEach((el) => this.stores.add(el));
-          this.notifyAllStoreCallbacks();
-        });
-      } else {
-        onStoresIDB((s: Store[]) => {
-          this.stores = new Set(s);
-          this.notifyAllStoreCallbacks();
-        });
-      }
+      storeUpdateCallbacks.push(callback);
       callback(this.getStores);
-    },
-    notifyAllStoreCallbacks(): void {
-      this.storeUpdateCallbacks.forEach((callback) => callback(this.getStores));
     },
   },
 });

@@ -12,6 +12,10 @@ import { Suspense } from 'vue';
 import { RouterView } from 'vue-router';
 import { firebaseAuth } from './boot/firebase';
 import { useUserStore } from './stores/userStore';
+import { useQuasar } from 'quasar';
+import { getDarkMode, setUpSettings } from './assets/ZettelActions';
+
+const $q = useQuasar();
 
 onAuthStateChanged(firebaseAuth, (user) => {
   if (user) {
@@ -20,4 +24,12 @@ onAuthStateChanged(firebaseAuth, (user) => {
     useUserStore().logOut();
   }
 });
+
+getDarkMode()
+  .then((darkMode) => {
+    $q.dark.set(darkMode);
+  })
+  .catch(() => {
+    setUpSettings();
+  });
 </script>

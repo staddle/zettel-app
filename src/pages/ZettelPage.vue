@@ -1,11 +1,13 @@
 <template>
-  <div class="column full-width full-height">
+  <div class="column full-width full-height bg-custom">
     <div v-if="!zettel.items || zettel.items?.length == 0" class="column flex-center q-mt-lg non-selectable noItems">
       <q-icon name="block" size="60px" />
       <span>No items found.</span>
     </div>
-    <div class="zettel-item" v-for="item in zettel.items" :key="item.id">
-      <ZettelItem :item="item" @on-edit="onEdit(item)" @on-delete="onRemove(item)" />
+    <div class="items-container">
+      <div class="zettel-item" v-for="item in zettel.items" :key="item.id">
+        <ZettelItem :item="item" @on-edit="onEdit(item)" @on-delete="(cb) => onRemove(item, cb)" />
+      </div>
     </div>
 
     <!--sticky button-->
@@ -53,6 +55,9 @@ const editing = ref(false);
 const firstEditing = ref(false);
 const deleteDialogOpened = ref(false);
 const deleteItemObject = ref({} as Item);
+const deleteCallback: Ref<() => void> = ref(() => {
+  /**/
+});
 
 const userStore = useUserStore();
 
@@ -98,9 +103,10 @@ function onClose(): void {
   }
 }
 
-function onRemove(item: Item): void {
+function onRemove(item: Item, cb: () => void): void {
   deleteDialogOpened.value = true;
   deleteItemObject.value = item;
+  deleteCallback.value = cb;
 }
 
 function deleteItemAfterDialog() {
@@ -123,6 +129,7 @@ function closeDeleteItemDialog() {
   editing.value = false;
   editingItem.value = {} as Item;
   if (firstEditing.value) firstEditing.value = false;
+  deleteCallback.value();
 }
 </script>
 
@@ -136,7 +143,18 @@ function closeDeleteItemDialog() {
   border-color: #bbb;
 }
 
-zettel-item:last-of-type .item-separator {
+.zettel-item:last-of-type .item-separator {
   display: none;
+}
+
+.items-container {
+  border-radius: 0.7rem 0.7rem 0 0;
+  overflow: hidden;
+}
+.bg-custom {
+  background-color: var(--q-primary);
+}
+.body--dark .bg-custom {
+  background-color: #ffffff0c;
 }
 </style>

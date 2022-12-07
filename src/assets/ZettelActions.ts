@@ -131,7 +131,7 @@ function idbOperation(
     const tx: IDBTransaction = db.transaction(storeName, operation == IDBOperation.GET ? 'readonly' : 'readwrite');
     const idbStore: IDBObjectStore = tx.objectStore(storeName);
     return new Promise((resolve, reject) => {
-      let request;
+      let request: IDBRequest;
       switch (operation) {
         case IDBOperation.GET:
           if (id) request = idbStore.get(id);
@@ -219,7 +219,6 @@ export async function updateZettelIDB(zettel: Zettel): Promise<void> {
 }
 
 export async function getStoresFromIDB(): Promise<Store[]> {
-  console.log('getstores');
   return idbOperation('stores', IDBOperation.GET);
 }
 
@@ -229,4 +228,16 @@ export async function addStoreToIDB(store: Store): Promise<void> {
 
 export async function removeStoreFromIDB(store: Store): Promise<void> {
   return idbOperation('stores', IDBOperation.REMOVE, {}, store.id).then(notifyStoresCallbacks);
+}
+
+export async function setDarkMode(darkMode: boolean): Promise<void> {
+  return idbOperation('settings', IDBOperation.UPDATE, { id: '0', darkMode });
+}
+
+export async function setUpSettings(): Promise<void> {
+  return idbOperation('settings', IDBOperation.ADD, { id: '0', darkMode: false });
+}
+
+export async function getDarkMode(): Promise<boolean> {
+  return idbOperation('settings', IDBOperation.GET, {}, '0').then((settings) => settings.darkMode);
 }
