@@ -4,16 +4,16 @@
       <MainDrawer :user-name="userName" @close="toggleRightDrawer()" />
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container style="height: 100vh">
       <router-view />
     </q-page-container>
 
-    <q-footer reveal class="bg-grey-2 text-grey-7 border-top">
+    <q-footer reveal class="footer-color">
       <q-toolbar class="justify-center q-pa-none">
         <q-tabs dense indicator-color="transparent" active-color="accent" class="justify-around full-width">
-          <q-route-tab to="/" label="Drawer" icon="fas fa-paste" />
-          <q-route-tab to="/search" label="Find" icon="search" />
-          <q-route-tab to="/user" label="Profile" icon="account_circle" :alert="hasUserAlerts" />
+          <q-route-tab to="/" label="Drawer" icon="fas fa-paste" class="q-pt-xs" />
+          <q-route-tab to="/search" label="Find" icon="search" class="q-pt-xs" />
+          <q-route-tab to="/user" label="Profile" icon="account_circle" :alert="hasUserAlerts" class="q-pt-xs" />
         </q-tabs>
       </q-toolbar>
     </q-footer>
@@ -56,5 +56,17 @@ function toggleRightDrawer() {
 
 .border-top {
   border-top: 1px solid #ddd;
+}
+
+.footer-color {
+  background-color: #0000000c;
+  color: #777;
+}
+
+.body--dark {
+  & .footer-color {
+    background-color: #ffffff0c;
+    color: #bbb;
+  }
 }
 </style>

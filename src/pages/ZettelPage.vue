@@ -9,7 +9,7 @@
     </div>
 
     <!--sticky button-->
-    <q-page-sticky position="bottom-right" :offset="[24, 24]">
+    <q-page-sticky position="bottom-right" :offset="[16, 16]">
       <q-btn fab push icon="add" color="accent" @click="newItem()" :disable="editing" />
     </q-page-sticky>
 
@@ -46,7 +46,6 @@ import { Item, Zettel } from 'src/model/Zettel';
 import { inject, ref, Ref, watch } from 'vue';
 import * as ZettelActions from 'assets/ZettelActions';
 import { useUserStore } from 'src/stores/userStore';
-import { deleteItem } from 'assets/ZettelActions';
 
 const zettel: Ref<Zettel> = inject('zettel') as Ref<Zettel>;
 const editingItem = ref({} as Item);
@@ -55,12 +54,27 @@ const firstEditing = ref(false);
 const deleteDialogOpened = ref(false);
 const deleteItemObject = ref({} as Item);
 
+const userStore = useUserStore();
+
 async function newItem() {
   if (!editing.value) {
-    ZettelActions.newItem(useUserStore().user.uid, zettel.value.id).then((item) => {
-      editingItem.value = item;
-      firstEditing.value = true;
-    });
+    if (userStore.signedIn) {
+      ZettelActions.newItem(userStore.user.uid, zettel.value.id).then((item) => {
+        editingItem.value = item;
+        firstEditing.value = true;
+      });
+    } else {
+      const newItem = {
+        id: ZettelActions.getID(),
+      } as Item;
+      const zettelClone = JSON.parse(JSON.stringify(zettel.value));
+      if (!zettelClone.items) zettelClone.items = [];
+      zettelClone.items.push(newItem);
+      ZettelActions.updateZettelIDB(zettelClone).then(() => {
+        editingItem.value = newItem;
+        firstEditing.value = true;
+      });
+    }
   }
 }
 
@@ -76,8 +90,9 @@ function onDone(): void {
 
 function onClose(): void {
   if (firstEditing.value) {
-    deleteItem(zettel.value.owner, zettel.value.id, editingItem.value.id);
-    firstEditing.value = false;
+    deleteItem(editingItem.value).then(() => {
+      firstEditing.value = false;
+    });
   } else {
     editing.value = false;
   }
@@ -89,7 +104,17 @@ function onRemove(item: Item): void {
 }
 
 function deleteItemAfterDialog() {
-  deleteItem(zettel.value.owner, zettel.value.id, deleteItemObject.value.id).then(closeDeleteItemDialog);
+  deleteItem(deleteItemObject.value).then(closeDeleteItemDialog);
+}
+
+async function deleteItem(item: Item): Promise<void> {
+  if (userStore.signedIn) {
+    return ZettelActions.deleteItem(zettel.value.owner, zettel.value.id, item.id);
+  } else {
+    const zettelClone = JSON.parse(JSON.stringify(zettel.value));
+    zettelClone.items = zettelClone.items.filter((i: Item) => i.id != item.id);
+    return ZettelActions.updateZettelIDB(zettelClone);
+  }
 }
 
 function closeDeleteItemDialog() {

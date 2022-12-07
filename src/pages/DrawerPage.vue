@@ -1,13 +1,16 @@
 <template>
   <div class="q-ma-md column items-center">
-    <div v-if="signedIn()" class="full-width">
-      <div class="text-body1">Welcome,</div>
-      <div class="text-h4 q-mb-lg">
-        {{ user().displayName }}
+    <div class="full-width">
+      <div v-if="signedIn()">
+        <div class="text-body1">Welcome,</div>
+        <div class="text-h4 q-mb-lg">
+          {{ user().displayName }}
+        </div>
       </div>
-      <ZettelList @new-zettel="newZettel = true" />
-      <q-page-sticky position="bottom-right" :offset="[24, 24]">
-        <q-btn fab icon="add" color="accent" @click="newZettel = true" />
+      <div v-else class="text-h4 q-mb-lg">Welcome,</div>
+      <ZettelList @new-zettel="newZettel = true" @delete-zettel="(z) => openDeleteDialog(z)" />
+      <q-page-sticky position="bottom-right" :offset="[16, 16]">
+        <q-btn fab push icon="add" color="accent" @click="newZettel = true" />
       </q-page-sticky>
       <q-dialog v-model="newZettel">
         <q-card>
@@ -49,23 +52,19 @@
         </q-card>
       </q-dialog>
     </div>
-    <div v-else>Please <q-btn @click="goToSignIn()"> sign-in </q-btn> to continue</div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { DataSnapshot, onValue, push, ref as dbRef, set } from '@firebase/database';
+import { ref as dbRef, set } from '@firebase/database';
 import { firebaseDatabase as db } from 'boot/firebase';
-import { get } from 'firebase/database';
 import { QInput } from 'quasar';
-import { getUserFromDB } from 'src/assets/UserActions';
-import UserAvatar from 'src/components/UserAvatar.vue';
 import ZettelList from 'src/components/ZettelList.vue';
-import { User } from 'src/model/User';
 import { Zettel } from 'src/model/Zettel';
 import { useUserStore } from 'src/stores/userStore';
-import { onMounted, Ref, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { Ref, ref } from 'vue';
+import { addZettel as addZettelToDb, addZettelToIDB, removeZettelFromIDB } from 'src/assets/ZettelActions';
+import { useQuasar } from 'quasar';
 
 const signedIn = () => useUserStore().signedIn;
 const user = () => useUserStore().user;
@@ -75,7 +74,7 @@ const deleteZettelObject: Ref<Zettel> = ref({} as Zettel);
 const inputRef: Ref<QInput | null> = ref(null);
 const newZettelName = ref('');
 
-const router = useRouter();
+const $q = useQuasar();
 
 function addZettel() {
   if (signedIn()) {
@@ -83,49 +82,32 @@ function addZettel() {
     if (inputRef.value?.hasError) {
       return;
     }
-    const newZettelRef = push(dbRef(db, `zettels/${user().uid}/`));
-    const zettel = {
-      id: newZettelRef.key ?? '',
-      title: newZettelName.value,
-      owner: user().uid,
-    } as Zettel;
-    set(newZettelRef, zettel);
+    addZettelToDb(user().uid, newZettelName.value);
+  } else {
+    addZettelToIDB(newZettelName.value).catch((reason: string) => $q.notify(reason));
   }
   newZettel.value = false;
 }
-
-/*function refreshZettels(done: () => void) {
-  if (signedIn()) {
-    const zettelRef = dbRef(db, `zettels/${user().uid}/`);
-    get(zettelRef).then((snapshot) => {
-      assignZettels(snapshot);
-      done();
-    });
-  } else {
-    done();
-  }
-}*/
 
 function cancelAddZettel(): void {
   newZettelName.value = '';
   inputRef.value?.resetValidation();
 }
 
+function deleteZettel(zettelId: string) {
+  console.log('deleteZettel');
+  if (signedIn()) {
+    set(dbRef(db, `zettels/${user().uid}/${zettelId}`), null);
+  } else {
+    removeZettelFromIDB(zettelId).catch((reason: string) => $q.notify(reason));
+  }
+  deleteZettelObject.value = {} as Zettel;
+  deleteZettelOpened.value = false;
+}
+
 function openDeleteDialog(zettel: Zettel) {
   deleteZettelObject.value = zettel;
   deleteZettelOpened.value = true;
-}
-
-function deleteZettel(zettelId: string) {
-  if (signedIn()) {
-    set(dbRef(db, `zettels/${user().uid}/${zettelId}`), null);
-    deleteZettelObject.value = {} as Zettel;
-    deleteZettelOpened.value = false;
-  }
-}
-
-function goToSignIn() {
-  router.push('/sign-in');
 }
 </script>
 

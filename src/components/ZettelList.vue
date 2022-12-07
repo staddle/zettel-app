@@ -6,7 +6,7 @@
         <q-btn color="primary" label="here" @click="emit('newZettel')" class="q-mx-xs" />
         to create one.
       </div>
-      <q-card v-for="zettel in zettels" :key="zettel.id" class="bg-secondary zettel-card">
+      <q-card v-for="zettel in zettels" :key="zettel.id" class="bg-secondary zettel-card q-mb-md">
         <div class="backdrop" @click="selectZettel(zettel)"></div>
         <q-card-section class="text-h6 row justify-between items-center">
           <span class="z-2">{{ zettel.title }}</span>
@@ -49,7 +49,7 @@
 import { DataSnapshot, onValue, get, ref as dbRef } from '@firebase/database';
 import { firebaseDatabase as db } from 'boot/firebase';
 import { getUserFromDB } from 'src/assets/UserActions';
-import { deleteZettel } from 'src/assets/ZettelActions';
+import { deleteZettel, getZettelsFromIDB, onZettelListIDB } from 'src/assets/ZettelActions';
 import { User } from 'src/model/User';
 import { Zettel } from 'src/model/Zettel';
 import { useUserStore } from 'src/stores/userStore';
@@ -79,6 +79,14 @@ function fetchZettels() {
       loadingZettels.value = false;
       assignZettels(snapshot);
     });
+  } else {
+    onZettelListIDB((zettelList: Zettel[]) => {
+      loadingZettels.value = false;
+      zettels.value = zettelList;
+      zettels.value.forEach(async (zettel) => {
+        owners.value[zettel.owner] = await getOwnerDetails(zettel.owner);
+      });
+    });
   }
 }
 
@@ -98,7 +106,7 @@ async function getOwnerDetails(ownerID: string): Promise<User> {
 }
 
 function onDeleteZettel(zettel: Zettel) {
-  deleteZettel(zettel.owner, zettel.id);
+  emit('deleteZettel', zettel);
 }
 
 function selectZettel(zettel: Zettel) {

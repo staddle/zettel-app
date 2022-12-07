@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-import { addUserStore } from 'src/assets/ZettelActions';
+import { addUserStore, addStoreToIDB, getID } from 'src/assets/ZettelActions';
 import { Store } from 'src/model/Zettel';
 import { useUserStore } from 'src/stores/userStore';
 import { ref, toRefs, watch } from 'vue';
@@ -52,8 +52,14 @@ function onSubmit() {
   if (nameInput.value.hasError) {
     return;
   } else {
-    addUserStore(useUserStore().uid, { name: name.value } as Store);
-    onReset();
+    if (useUserStore().signedIn) {
+      addUserStore(useUserStore().uid, { name: name.value } as Store).then(onReset);
+    } else {
+      addStoreToIDB({
+        id: getID(),
+        name: name.value,
+      } as Store).then(onReset);
+    }
   }
 }
 

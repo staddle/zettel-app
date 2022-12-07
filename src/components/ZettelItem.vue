@@ -20,8 +20,9 @@
 </template>
 
 <script lang="ts" setup>
-import { deleteItem, markItemDone } from 'src/assets/ZettelActions';
+import { deleteItem, markItemDone, updateZettelIDB } from 'src/assets/ZettelActions';
 import { Item, Zettel } from 'src/model/Zettel';
+import { useUserStore } from 'src/stores/userStore';
 import { inject, ref, Ref, toRefs } from 'vue';
 
 const props = defineProps<{ item: Item }>();
@@ -39,16 +40,20 @@ function edit(): void {
   emit('onEdit');
 }
 
-function deleteIt(): void {
-  deleteItem(zettel.value.owner, zettel.value.id, item.value.id);
-}
-
 function slideLeft({ reset }: { reset: () => void }): void {
   //mark done
-  if (item.value.done) {
-    markItemDone(zettel.value.owner, zettel.value.id, item.value.id, false).then(reset);
+  if (useUserStore().signedIn) {
+    markItemDone(zettel.value.owner, zettel.value.id, item.value.id, !item.value.done).then(reset);
   } else {
-    markItemDone(zettel.value.owner, zettel.value.id, item.value.id).then(reset);
+    const zettelClone = JSON.parse(JSON.stringify(zettel.value));
+    const itemClone = JSON.parse(JSON.stringify(item.value));
+    zettelClone.items = zettelClone.items.map((i: Item) => {
+      if (i.id == itemClone.id) {
+        i.done = !i.done;
+      }
+      return i;
+    });
+    updateZettelIDB(zettelClone).then(reset);
   }
 }
 

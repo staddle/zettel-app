@@ -32,7 +32,7 @@
             </q-select>
           </div>
           <div class="column">
-            <q-btn color="primary" padding="sm" push icon="done" type="submit"></q-btn>
+            <q-btn color="primary" padding="sm" push icon="done" type="submit" class="q-mb-md"></q-btn>
             <q-btn color="primary" padding="sm" push icon="delete" @click="remove()"></q-btn>
           </div>
           <q-btn class="absolute close-button" flat round icon="close" type="reset"></q-btn>
@@ -45,10 +45,11 @@
 
 <script lang="ts" setup>
 import NewStore from './NewStore.vue';
-import { updateItem } from 'src/assets/ZettelActions';
+import { updateItem, updateZettelIDB } from 'src/assets/ZettelActions';
 import { Item, Store, Zettel } from 'src/model/Zettel';
 import { useStoresStore } from 'src/stores/storesStore';
 import { inject, Ref, ref, toRefs, watch } from 'vue';
+import { useUserStore } from 'src/stores/userStore';
 
 const props = defineProps<{ opened: boolean; item: Item }>();
 const { opened, item } = toRefs(props);
@@ -69,14 +70,8 @@ const zettel: Ref<Zettel> = inject('zettel') as Ref<Zettel>;
 const nameInput = ref(null);
 const newName = ref(item.value.name ?? '');
 const newStore: Ref<Store | null> = ref(item.value.store ?? null);
-const stores = ref([] as Store[]);
-watch(
-  () => useStoresStore().stores,
-  (newStores) => {
-    stores.value = Array.from(newStores);
-  },
-  { immediate: true }
-);
+const userStore = useUserStore();
+const stores = inject('stores') as Ref<Store[]>;
 const addStoreOpen = ref(false);
 
 const emit = defineEmits<{
@@ -94,10 +89,20 @@ function onSubmit(): void {
   if (nameInput.value.hasError) {
     return;
   } else {
-    emit('onDone');
     item.value.name = newName.value;
     if (newStore.value) item.value.store = newStore.value;
-    updateItem(zettel.value.owner, zettel.value.id, item.value);
+    if (userStore.signedIn) {
+      updateItem(zettel.value.owner, zettel.value.id, item.value).then(() => {
+        emit('onDone');
+      });
+    } else {
+      const clonedZettel: Zettel = JSON.parse(JSON.stringify(zettel.value));
+      const clonedItem: Item = JSON.parse(JSON.stringify(item.value));
+      clonedZettel.items = clonedZettel.items.map((i) => (i.id === clonedItem.id ? clonedItem : i));
+      updateZettelIDB(clonedZettel).then(() => {
+        emit('onDone');
+      });
+    }
   }
 }
 
