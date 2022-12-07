@@ -14,6 +14,7 @@
               class="full-width"
               autofocus
               label="Name"
+              :color="$q.dark.isActive ? 'accent' : 'primary'"
               :rules="[(val) => (val && val.length > 1) || 'Please give a name.']"
               maxlength="64"
             >
@@ -21,7 +22,13 @@
                 <q-icon name="description" />
               </template>
             </q-input>
-            <q-select v-model="newStore" :options="stores" option-label="name" label="Store">
+            <q-select
+              v-model="newStore"
+              :options="stores"
+              option-label="name"
+              label="Store"
+              :color="$q.dark.isActive ? 'accent' : 'primary'"
+            >
               <template v-slot:before>
                 <q-icon name="local_grocery_store" />
               </template>
@@ -33,7 +40,14 @@
           </div>
           <div class="column">
             <q-btn color="primary" padding="sm" push icon="done" type="submit" class="q-mb-md"></q-btn>
-            <q-btn color="primary" padding="sm" push icon="delete" @click="remove()"></q-btn>
+            <q-btn
+              color="negative"
+              padding="sm"
+              push
+              icon="delete"
+              :class="{ 'text-dark': $q.dark.isActive }"
+              @click="remove()"
+            ></q-btn>
           </div>
           <q-btn class="absolute close-button" flat round icon="close" type="reset"></q-btn>
         </form>
@@ -50,9 +64,12 @@ import { Item, Store, Zettel } from 'src/model/Zettel';
 import { useStoresStore } from 'src/stores/storesStore';
 import { inject, Ref, ref, toRefs, watch } from 'vue';
 import { useUserStore } from 'src/stores/userStore';
+import { useQuasar } from 'quasar';
 
 const props = defineProps<{ opened: boolean; item: Item }>();
 const { opened, item } = toRefs(props);
+
+const $q = useQuasar();
 
 watch(opened, (newOpened) => {
   dialogOpen.value = newOpened;
@@ -119,4 +136,8 @@ function addStore() {
 }
 </script>
 
-<style></style>
+<style>
+.text-dark {
+  color: var(--q-dark) !important;
+}
+</style>

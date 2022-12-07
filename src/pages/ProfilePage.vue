@@ -40,7 +40,7 @@
               <q-item-section>{{ store.name }}</q-item-section>
               <q-item-section avatar>
                 <div class="row">
-                  <q-btn flat dense icon="edit" class="q-mr-xs" size="12px" @click="removeStore(store)" />
+                  <q-btn flat dense icon="edit" class="q-mr-xs" size="12px" @click="editStore(store)" />
                   <q-btn flat dense icon="delete" size="12px" @click="removeStore(store)" />
                 </div>
               </q-item-section>
@@ -106,6 +106,10 @@ function removeStore(store: Store) {
   } else {
     removeStoreFromIDB(store);
   }
+}
+
+function editStore(store: Store) {
+  $q.notify('Available soon...');
 }
 </script>
 
