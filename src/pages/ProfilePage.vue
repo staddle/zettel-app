@@ -36,6 +36,9 @@
             <q-btn push dense icon="add" class="q-pa-sm" size="12px" @click="newStore()" />
           </div>
           <q-list class="stores-list q-mx-sm">
+            <q-item v-if="stores.length == 0">
+              <q-item-section class="flex-center text-grey-8">No stores added yet</q-item-section>
+            </q-item>
             <q-item v-for="store in stores" :key="store.id">
               <q-item-section>{{ store.name }}</q-item-section>
               <q-item-section avatar>

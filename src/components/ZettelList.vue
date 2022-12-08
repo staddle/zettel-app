@@ -1,10 +1,13 @@
 <template>
   <div>
     <div v-if="!loadingZettels">
-      <div v-if="zettels.length == 0" class="text-primary row items-center">
-        No Zettels found. Click
-        <q-btn color="primary" label="here" @click="emit('newZettel')" class="q-mx-xs" />
-        to create one.
+      <div v-if="zettels.length == 0" class="text-grey-8 column items-center">
+        <span class="q-mb-sm">No Zettels found.</span>
+        <span>
+          Click
+          <q-btn push label="here" @click="emit('newZettel')" class="q-mx-sm" />
+          to create one.
+        </span>
       </div>
       <q-card v-for="zettel in zettels" :key="zettel.id" class="zettel-card q-mb-md text-white bg-primary">
         <div class="backdrop" @click="selectZettel(zettel)"></div>
@@ -33,7 +36,8 @@
           <div class="row justify-between">
             <div>
               by
-              <UserAvatar :user="owners[zettel.owner]" />
+              <UserAvatar v-if="signedIn()" :user="owners[zettel.owner]" />
+              <span v-else>You</span>
             </div>
           </div>
         </q-card-section>

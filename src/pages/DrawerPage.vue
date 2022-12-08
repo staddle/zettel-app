@@ -7,7 +7,7 @@
           {{ user().displayName }}
         </div>
       </div>
-      <div v-else class="text-h4 q-mb-lg">Welcome,</div>
+      <div v-else class="text-h5 q-mb-lg">Welcome,</div>
       <ZettelList @new-zettel="newZettel = true" @delete-zettel="(z) => openDeleteDialog(z)" />
       <q-page-sticky position="bottom-right" :offset="[16, 16]">
         <q-btn fab push icon="add" color="accent" @click="newZettel = true" />
@@ -32,8 +32,8 @@
           </q-card-section>
 
           <q-card-actions align="right" class="text-primary">
-            <q-btn flat label="Cancel" @click="cancelAddZettel()" v-close-popup />
-            <q-btn label="Add" color="accent" @click="addZettel()" />
+            <q-btn push label="Cancel" @click="cancelAddZettel()" v-close-popup />
+            <q-btn push label="Add" color="primary" @click="addZettel()" />
           </q-card-actions>
         </q-card>
       </q-dialog>
@@ -42,12 +42,12 @@
           <q-card-section>
             <div class="text-h6 column">
               <span>Are you sure you want to delete</span>
-              <span class="text-accent q-pl-md">{{ deleteZettelObject.title }}</span>
+              <span class="text-primary row flex-center">{{ deleteZettelObject.title }}</span>
             </div>
           </q-card-section>
           <q-card-actions align="right">
-            <q-btn flat label="Cancel" v-close-popup />
-            <q-btn label="Delete" color="negative" @click="deleteZettel(deleteZettelObject.id)" />
+            <q-btn push label="Cancel" v-close-popup />
+            <q-btn push label="Delete" color="negative" @click="deleteZettel(deleteZettelObject.id)" />
           </q-card-actions>
         </q-card>
       </q-dialog>

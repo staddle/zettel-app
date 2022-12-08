@@ -12,6 +12,7 @@ export default boot(async (/*{ app }*/) => {
   dbPromise = new Promise((resolve, reject) => {
     request.onupgradeneeded = (event) => {
       const localDB = event.target.result as IDBDatabase;
+      const tx = event.target.transaction as IDBTransaction;
       if (event.oldVersion < 1) {
         const zettelStore = localDB.createObjectStore('zettels', { keyPath: 'id' });
         zettelStore.createIndex('owner', 'owner', { unique: false });
@@ -23,7 +24,7 @@ export default boot(async (/*{ app }*/) => {
         localDB.createObjectStore('settings', { keyPath: 'id' });
       }
 
-      resolve(localDB);
+      tx.oncomplete = () => resolve(localDB);
     };
 
     request.onsuccess = (event) => {
