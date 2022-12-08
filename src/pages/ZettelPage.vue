@@ -1,6 +1,9 @@
 <template>
   <div class="column full-width full-height bg-custom">
-    <div v-if="!zettel.items || zettel.items?.length == 0" class="column flex-center q-mt-lg non-selectable noItems">
+    <div
+      v-if="!zettel.items || zettel.items?.length == 0"
+      class="column flex-center q-pt-lg non-selectable noItems bg-white items-container"
+    >
       <q-icon name="block" size="60px" />
       <span>No items found.</span>
     </div>
@@ -148,7 +151,7 @@ function closeDeleteItemDialog() {
 }
 
 .items-container {
-  border-radius: 0.7rem 0.7rem 0 0;
+  border-radius: 1rem 1rem 0 0;
   overflow: hidden;
 }
 .bg-custom {

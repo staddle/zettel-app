@@ -5,7 +5,19 @@
         <q-icon name="arrow_back_ios" class="q-mr-xs cursor-pointer" size="1.4rem" @click="goBack()" />
         <div class="text-h6 text-accent" v-if="zettel.title">{{ zettel.title }}</div>
       </div>
-      <div class="text-body2" v-if="zettel.title">by {{ user.displayName ?? 'Me' }}</div>
+      <div class="row items-center">
+        <div class="text-body2" v-if="zettel.title">by {{ user.displayName ?? 'Me' }}</div>
+        <q-btn dense flat round icon="more_vert">
+          <q-menu>
+            <div class="q-pa-md column menu">
+              <div class="row items-center">
+                <q-icon name="help_outline" class="q-mr-sm" />
+                Help
+              </div>
+            </div>
+          </q-menu>
+        </q-btn>
+      </div>
     </div>
     <div class="row flex-center">
       <router-view v-if="zettel.title"></router-view>
