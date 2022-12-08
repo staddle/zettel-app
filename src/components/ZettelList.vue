@@ -75,11 +75,12 @@ const loadingZettels = ref(true);
 const emit = defineEmits<{
   (event: 'newZettel'): void;
   (event: 'deleteZettel', zettel: Zettel): void;
+  (event: 'provideRefresh', refresh: (done: () => void) => void): void;
 }>();
 
 const $q = useQuasar();
 
-function fetchZettels() {
+function fetchZettels(done?: () => void) {
   if (signedIn()) {
     const zettelRef = dbRef(db, `zettels/${user().uid}/`);
     onValue(zettelRef, (snapshot) => {
@@ -95,7 +96,11 @@ function fetchZettels() {
       });
     });
   }
+  console.log('fetchZettels');
+  if (done) done();
 }
+
+emit('provideRefresh', fetchZettels);
 
 function assignZettels(snapshot: DataSnapshot) {
   if (snapshot.exists()) {

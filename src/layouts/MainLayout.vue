@@ -1,9 +1,5 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <q-drawer v-model="rightDrawerOpen" side="right" overlay bordered>
-      <MainDrawer :user-name="userName" @close="toggleRightDrawer()" />
-    </q-drawer>
-
     <q-page-container style="height: 100vh">
       <router-view />
     </q-page-container>
@@ -21,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import { onAuthStateChanged } from '@firebase/auth';
 import { firebaseAuth } from 'boot/firebase';
 import MainDrawer from 'src/components/MainDrawer.vue';
@@ -30,7 +26,6 @@ import { useUserStore } from 'src/stores/userStore';
 
 const userName = ref('');
 const userAvatar = ref('');
-const rightDrawerOpen = ref(false);
 const hasUserAlerts = useUserStore().hasUserAlerts;
 
 onAuthStateChanged(firebaseAuth, (user) => {
@@ -42,10 +37,6 @@ onAuthStateChanged(firebaseAuth, (user) => {
     userAvatar.value = getAvatar('');
   }
 });
-
-function toggleRightDrawer() {
-  rightDrawerOpen.value = !rightDrawerOpen.value;
-}
 </script>
 
 <style lang="scss">
