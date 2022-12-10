@@ -1,25 +1,34 @@
 <template>
-  <q-page-container>
-    <div class="row justify-between q-py-sm q-px-md header-color items-end">
+  <div class="header-color">
+    <div class="row justify-between q-py-sm q-px-md items-end">
       <div class="row items-center">
         <q-icon name="arrow_back_ios" class="q-mr-xs cursor-pointer" size="1.4rem" @click="goBack()" />
         <div class="text-h6 text-accent" v-if="zettel.title">{{ zettel.title }}</div>
       </div>
       <div class="row items-center">
         <div class="text-body2" v-if="zettel.title">by {{ user.displayName ?? 'Me' }}</div>
-        <q-btn dense flat round icon="more_vert">
-          <q-menu>
-            <div class="q-pa-md column menu">
-              <div class="row items-center">
-                <q-icon name="help_outline" class="q-mr-sm" />
-                Help
-              </div>
-            </div>
-          </q-menu>
-        </q-btn>
+        <q-btn dense flat round icon="sort" @click="toggleFilters()" />
       </div>
     </div>
-    <div class="row flex-center">
+    <div class="filters" :class="{ 'hide-filters': !filtersShown }">
+      <q-separator />
+      <div class="row justify-between items-center">
+        <q-item class="full-width">
+          <q-item-section class="text-body2">Sort by</q-item-section>
+          <q-item-section>
+            <q-select
+              dense
+              v-model="sortBy"
+              :options="sortingOptions"
+              class="white-select"
+              color="accent"
+              hide-bottom-space
+            />
+          </q-item-section>
+        </q-item>
+      </div>
+    </div>
+    <div class="row flex-center bg-white" :class="{ 'filters-hidden': !filtersShown }">
       <router-view v-if="zettel.title"></router-view>
       <div v-else class="text-body1 column flex-center text-grey-6 q-mt-xl">
         <q-icon name="block" size="60px" />
@@ -29,7 +38,7 @@
         </q-btn>
       </div>
     </div>
-  </q-page-container>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -48,6 +57,12 @@ const { zettelID } = toRefs(props);
 const zettel: Ref<Zettel> = ref({} as Zettel);
 const stores = ref([] as Store[]);
 const user = ref({} as User);
+const filtersShown = ref(false);
+const sortBy = ref('Newest');
+const sortingOptions = ref([
+  { label: 'Newest', value: 'Newest' },
+  { label: 'Oldest', value: 'Oldest' },
+]);
 
 provide('zettel', zettel);
 provide('stores', stores);
@@ -68,6 +83,10 @@ if (useUserStore().signedIn) {
   });
 }
 
+function toggleFilters() {
+  filtersShown.value = !filtersShown.value;
+}
+
 function goBack() {
   router.back();
 }
@@ -81,6 +100,31 @@ function goBack() {
 .header-color {
   background-color: var(--q-primary);
   color: white;
+}
+
+.hide-filters {
+  //opacity: 0;
+}
+
+.filters-hidden {
+  margin-top: -70px;
+  z-index: 1000;
+}
+
+.white-select {
+  & .q-field__native,
+  .q-field__marginal,
+  .q-field__control {
+    color: white !important;
+  }
+}
+
+.q-field--standard .q-field__control::before {
+  border-color: white !important;
+}
+
+.white {
+  color: white !important;
 }
 
 .body--dark {
