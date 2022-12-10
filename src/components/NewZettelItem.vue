@@ -1,7 +1,7 @@
 <template>
   <q-dialog v-model="dialogOpen" @hide="onHide()" position="bottom" :persistent="false">
     <q-card>
-      <q-card-section>
+      <q-card-section class="upper-section">
         <form
           class="row items-center justify-between full-width no-wrap"
           @submit.prevent.stop="onSubmit()"
@@ -52,6 +52,9 @@
           <q-btn class="absolute close-button" flat round icon="close" type="reset"></q-btn>
         </form>
       </q-card-section>
+      <div class="text-grey-8 text-body2 q-mb-xs q-mr-xs row items-center justify-end">
+        Created on {{ item.date.toLocaleString() }}
+      </div>
     </q-card>
   </q-dialog>
   <NewStore :opened="addStoreOpen" @set-opened="(o) => (addStoreOpen = o)" />
@@ -61,7 +64,6 @@
 import NewStore from './NewStore.vue';
 import { updateItem, updateZettelIDB } from 'src/assets/ZettelActions';
 import { Item, Store, Zettel } from 'src/model/Zettel';
-import { useStoresStore } from 'src/stores/storesStore';
 import { inject, Ref, ref, toRefs, watch } from 'vue';
 import { useUserStore } from 'src/stores/userStore';
 import { useQuasar } from 'quasar';
@@ -139,5 +141,9 @@ function addStore() {
 <style>
 .text-dark {
   color: var(--q-dark) !important;
+}
+
+.upper-section {
+  padding-bottom: 0.5rem;
 }
 </style>

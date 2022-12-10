@@ -111,6 +111,7 @@ function removeStore(store: Store) {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function editStore(store: Store) {
   $q.notify('Available soon...');
 }

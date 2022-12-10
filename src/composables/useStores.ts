@@ -2,7 +2,7 @@ import { onAuthStateChanged } from '@firebase/auth';
 import { getUserStores, onStoresIDB, getStores as getDefaultStores } from 'src/assets/ZettelActions';
 import { firebaseAuth } from 'src/boot/firebase';
 import { Store } from 'src/model/Zettel';
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 
 export function useStores() {
   const storeUpdateCallbacks = [] as ((s: Store[]) => void)[];

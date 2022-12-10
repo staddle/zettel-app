@@ -41,7 +41,7 @@ export function addZettel(uid: string, title: string) {
 
 export async function newItem(uid: string, zettelID: string): Promise<Item> {
   const pushRef = push(ref(firebaseDatabase, `zettels/${uid}/${zettelID}/items`));
-  const newItem = { id: pushRef.key } as Item;
+  const newItem = { id: pushRef.key, date: new Date() } as Item;
   return set(pushRef, newItem).then(() => newItem);
 }
 
