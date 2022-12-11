@@ -10,7 +10,7 @@ export type Zettel = {
 export type Item = {
   id: string;
   name: string;
-  date: Date;
+  date: number;
   itemType: ItemType;
   store: Store;
   done: boolean;

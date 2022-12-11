@@ -67,7 +67,7 @@ const showDone = inject('showDone') as Ref<boolean>;
 const sortBy = inject('sortBy') as Ref<string>;
 
 const sortedItems = computed(() => {
-  if (!zettel.value.items) return [];
+  if (!zettel.value.items || !zettel.value.items.filter) return [];
   return zettel.value.items
     .filter((item) => showDone.value || !item.done)
     .sort((a, b) => {
@@ -95,7 +95,7 @@ async function newItem() {
     } else {
       const newItem = {
         id: ZettelActions.getID(),
-        date: new Date(),
+        date: new Date().getTime(),
       } as Item;
       const zettelClone = JSON.parse(JSON.stringify(zettel.value));
       if (!zettelClone.items) zettelClone.items = [];
@@ -154,7 +154,6 @@ function closeDeleteItemDialog() {
   editing.value = false;
   editingItem.value = {} as Item;
   if (firstEditing.value) firstEditing.value = false;
-  deleteCallback.value();
 }
 </script>
 

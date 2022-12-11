@@ -33,6 +33,7 @@
                 rounded
                 ref="inputRef"
                 v-model="newZettelName"
+                :color="$q.dark.isActive ? 'accent' : 'primary'"
                 autofocus
                 label="Name"
                 :rules="[
@@ -43,9 +44,9 @@
               />
             </q-card-section>
 
-            <q-card-actions align="right" class="text-primary">
+            <q-card-actions align="right">
               <q-btn push label="Cancel" @click="cancelAddZettel()" v-close-popup />
-              <q-btn push label="Add" color="primary" @click="addZettel()" />
+              <q-btn push label="Add" :color="$q.dark.isActive ? 'accent' : 'primary'" @click="addZettel()" />
             </q-card-actions>
           </q-card>
         </q-dialog>
@@ -54,7 +55,7 @@
             <q-card-section>
               <div class="text-h6 column">
                 <span>Are you sure you want to delete</span>
-                <span class="text-primary row flex-center">{{ deleteZettelObject.title }}</span>
+                <span class="text-accent row flex-center">{{ deleteZettelObject.title }}</span>
               </div>
             </q-card-section>
             <q-card-actions align="right">

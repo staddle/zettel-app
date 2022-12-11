@@ -52,8 +52,8 @@
           <q-btn class="absolute close-button" flat round icon="close" type="reset"></q-btn>
         </form>
       </q-card-section>
-      <div class="text-grey-8 text-body2 q-mb-xs q-mr-xs row items-center justify-end">
-        Created on {{ item.date.toLocaleString() }}
+      <div v-if="item.date" class="text-grey-8 text-body2 q-mb-xs q-mr-xs row items-center justify-end">
+        Created on {{ new Date(item.date).toLocaleString() }}
       </div>
     </q-card>
   </q-dialog>

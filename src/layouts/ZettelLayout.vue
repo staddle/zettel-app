@@ -12,7 +12,7 @@
         <q-btn dense flat round icon="sort" @click="toggleFilters()" />
       </div>
     </div>
-    <div class="filters">
+    <div v-if="zettel.title" class="filters">
       <q-item class="full-width">
         <q-item-section class="text-body2">
           <span class="row items-center">
@@ -60,7 +60,7 @@
 
 <script lang="ts" setup>
 import { Store, Zettel } from 'src/model/Zettel';
-import { provide, Ref, ref, toRefs } from 'vue';
+import { onMounted, provide, Ref, ref, toRefs } from 'vue';
 import * as ZettelActions from 'assets/ZettelActions';
 import { User } from 'src/model/User';
 import { useUserStore } from 'src/stores/userStore';
@@ -88,16 +88,24 @@ useStores().onStores((s) => {
   stores.value = s;
 });
 
-if (useUserStore().signedIn) {
-  user.value = useUserStore().user;
-  await ZettelActions.onZettel(user.value.uid, zettelID.value, (z) => {
-    zettel.value = z ?? ({} as Zettel);
-  });
-} else if (zettelID.value[0] == 'l') {
-  //no sign in but use local indexedDB
-  ZettelActions.onZettelIDB(zettelID.value, (z) => {
-    zettel.value = z ?? ({} as Zettel);
-  });
+const userStore = useUserStore();
+const stopSubscribe = userStore.$subscribe(async () => await fetchItems());
+onMounted(() => fetchItems());
+
+async function fetchItems() {
+  if (userStore.signedIn) {
+    user.value = userStore.user;
+    await ZettelActions.onZettel(user.value.uid, zettelID.value, (z) => {
+      zettel.value = z ?? ({} as Zettel);
+      zettel.value.items = Object.values(zettel.value.items ?? {});
+    });
+  } else if (zettelID.value[0] == 'l') {
+    //no sign in but use local indexedDB
+    ZettelActions.onZettelIDB(zettelID.value, (z) => {
+      zettel.value = z ?? ({} as Zettel);
+    });
+  }
+  if (stopSubscribe) stopSubscribe();
 }
 
 function toggleFilters() {
@@ -159,7 +167,7 @@ function goBack() {
 
 .page-content {
   position: absolute;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.1s ease-in;
   &:not(.filters-shown) {
     top: 50px;
     height: calc(100% - 50px);
