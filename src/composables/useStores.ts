@@ -34,7 +34,6 @@ export function useStores() {
 
   function subscribe() {
     if (uid.value != '') {
-      console.log('online');
       getDefaultStores((s) => {
         defaultStores.value = s;
         notifyAllStoreCallbacks();
@@ -44,7 +43,6 @@ export function useStores() {
         notifyAllStoreCallbacks();
       });
     } else {
-      console.log('offline');
       onStoresIDB((s: Store[]) => {
         stores.value = s;
         notifyAllStoreCallbacks();

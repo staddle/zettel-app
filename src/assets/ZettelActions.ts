@@ -2,6 +2,8 @@ import { get as dbGet, onValue, push, ref, set } from '@firebase/database';
 import { firebaseDatabase } from 'boot/firebase';
 import { Item, Store, Zettel } from 'src/model/Zettel';
 import { getIdb } from 'boot/indexedDBSync';
+import { useGlobals } from 'src/composables/useGlobals';
+import { defaultSettings } from 'src/model/Settings';
 
 export async function get(uid: string, zettelID: string): Promise<Zettel | null> {
   return await dbGet(ref(firebaseDatabase, `zettels/${uid}/${zettelID}`)).then((snapshot) => {
@@ -183,7 +185,7 @@ function notifyZettelsCallbacks(): void {
   getZettelsFromIDB().then((zettels) => zettelsCallbackList.forEach((callback) => callback(zettels)));
 }
 
-function notifySingleZettelCallbacks(zettelID): void {
+function notifySingleZettelCallbacks(zettelID: string): void {
   getSingleZettelFromIDB(zettelID).then((zettel) =>
     singleZettelCallbackList[zettelID].forEach((callback) => callback(zettel))
   );
@@ -219,7 +221,7 @@ export async function updateZettelIDB(zettel: Zettel): Promise<void> {
 }
 
 export async function getStoresFromIDB(): Promise<Store[]> {
-  return idbOperation('stores', IDBOperation.GET);
+  return idbOperation('stores', IDBOperation.GET).then((ret) => (ret == undefined ? [] : (ret as Store[])));
 }
 
 export async function addStoreToIDB(store: Store): Promise<void> {
@@ -231,11 +233,14 @@ export async function removeStoreFromIDB(store: Store): Promise<void> {
 }
 
 export async function setDarkMode(darkMode: boolean): Promise<void> {
-  return idbOperation('settings', IDBOperation.UPDATE, { id: '0', darkMode });
+  return idbOperation('settings', IDBOperation.UPDATE, { id: '0', darkMode }).then();
 }
 
 export async function setUpSettings(): Promise<void> {
-  return idbOperation('settings', IDBOperation.ADD, { id: '0', darkMode: false });
+  const globals = useGlobals();
+  const settings = defaultSettings;
+  settings.darkMode = globals.defaultTheme == 'dark';
+  return idbOperation('settings', IDBOperation.ADD, settings).then();
 }
 
 export async function getDarkMode(): Promise<boolean> {

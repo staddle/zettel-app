@@ -50,8 +50,14 @@
             </q-item>
           </q-list>
         </div>
-        <q-separator spaced />
+        <q-separator v-if="signedIn" spaced />
         <q-btn v-if="signedIn" icon="logout" color="accent" push label="Log out" @click="logOut()" style="bottom: 0" />
+        <q-separator spaced />
+        <div class="text-grey-8 text-body2 text-center">
+          Made by <a class="text-accent text-bold" href="https://nrosteck.me">staddle</a> | Zettel-App v{{
+            versionNumber
+          }}
+        </div>
       </div>
     </div>
     <LogOutDialog :opened="logOutDialogOpened" @close="closeLogOutDialog()" />
@@ -69,7 +75,9 @@ import { useQuasar } from 'quasar';
 import { Store } from 'src/model/Zettel';
 import { removeStoreFromIDB, deleteUserStore, setDarkMode } from 'src/assets/ZettelActions';
 import { useStores } from 'src/composables/useStores';
+import { useGlobals } from 'src/composables/useGlobals';
 
+const globals = useGlobals();
 const user = useUserStore().user;
 const signedIn = useUserStore().signedIn;
 const router = useRouter();
@@ -81,6 +89,8 @@ const $q = useQuasar();
 const darkMode = ref($q.dark.isActive);
 const logOutDialogOpened = ref(false);
 const newStoreOpened = ref(false);
+
+const versionNumber = ref(globals.version);
 
 watch(darkMode, (value) => {
   $q.dark.set(value);

@@ -96,7 +96,6 @@ function fetchZettels(done?: () => void) {
       });
     });
   }
-  console.log('fetchZettels');
   if (done) done();
 }
 

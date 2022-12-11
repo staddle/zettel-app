@@ -153,8 +153,8 @@ function goBack() {
 }
 
 .filters-shown {
-  top: 163px;
-  height: calc(100% - 163px);
+  top: 160px;
+  height: calc(100% - 160px);
 }
 
 .page-content {
