@@ -9,9 +9,9 @@
           <q-card-section class="text-center">
             {{ displayName }}
           </q-card-section>
-          <q-card-actions>
+          <!--<q-card-actions>
             <q-btn align="right" color="secondary" label="Visit Profile" class="text-black" />
-          </q-card-actions>
+          </q-card-actions>-->
         </q-card>
       </q-banner>
     </q-popup-proxy>

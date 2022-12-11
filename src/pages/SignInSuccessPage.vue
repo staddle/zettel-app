@@ -13,6 +13,7 @@ import { onAuthStateChanged } from '@firebase/auth';
 import { get, ref as dbRef } from '@firebase/database';
 import { firebaseAuth, firebaseDatabase } from 'boot/firebase';
 import { set } from 'firebase/database';
+import { useQuasar } from 'quasar';
 import { User } from 'src/model/User';
 import { useUserStore } from 'src/stores/userStore';
 import { ref } from 'vue';
@@ -20,6 +21,7 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const signedIn = ref(false);
+const $q = useQuasar();
 
 onAuthStateChanged(firebaseAuth, (user) => {
   if (user) {
@@ -45,6 +47,13 @@ onAuthStateChanged(firebaseAuth, (user) => {
         });
       }
       router.push('/');
+      $q.notify({
+        message: 'Signed in',
+        color: 'positive',
+        textColor: 'black',
+        position: 'top',
+        timeout: 2000,
+      });
     });
   } else {
     signedIn.value = false;

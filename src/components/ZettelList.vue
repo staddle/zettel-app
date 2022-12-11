@@ -65,8 +65,10 @@ import { useQuasar } from 'quasar';
 const router = useRouter();
 onMounted(fetchZettels);
 
-const signedIn = () => useUserStore().signedIn;
-const user = () => useUserStore().user;
+const userStore = useUserStore();
+
+const signedIn = () => userStore.signedIn;
+const user = () => userStore.user;
 const zettels: Ref<Zettel[]> = ref([]);
 const owners: Ref<{
   [key: string]: User;
@@ -78,7 +80,7 @@ const emit = defineEmits<{
   (event: 'provideRefresh', refresh: (done: () => void) => void): void;
 }>();
 
-const $q = useQuasar();
+userStore.$subscribe(() => fetchZettels());
 
 function fetchZettels(done?: () => void) {
   if (signedIn()) {
@@ -96,7 +98,6 @@ function fetchZettels(done?: () => void) {
       });
     });
   }
-  console.log('fetchZettels');
   if (done) done();
 }
 

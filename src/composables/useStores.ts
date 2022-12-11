@@ -2,7 +2,7 @@ import { onAuthStateChanged } from '@firebase/auth';
 import { getUserStores, onStoresIDB, getStores as getDefaultStores } from 'src/assets/ZettelActions';
 import { firebaseAuth } from 'src/boot/firebase';
 import { Store } from 'src/model/Zettel';
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 
 export function useStores() {
   const storeUpdateCallbacks = [] as ((s: Store[]) => void)[];
@@ -34,7 +34,6 @@ export function useStores() {
 
   function subscribe() {
     if (uid.value != '') {
-      console.log('online');
       getDefaultStores((s) => {
         defaultStores.value = s;
         notifyAllStoreCallbacks();
@@ -44,7 +43,6 @@ export function useStores() {
         notifyAllStoreCallbacks();
       });
     } else {
-      console.log('offline');
       onStoresIDB((s: Store[]) => {
         stores.value = s;
         notifyAllStoreCallbacks();

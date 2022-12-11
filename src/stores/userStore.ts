@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { User } from 'src/model/User';
 import { User as FirebaseUser } from 'firebase/auth';
 import { firebaseAuth } from 'src/boot/firebase';
+import { useRouter } from 'vue-router';
 
 export const useUserStore = defineStore('user', {
   state: () => ({

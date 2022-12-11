@@ -4,11 +4,15 @@
       <div class="full-width">
         <div v-if="signedIn()">
           <div class="text-body1">Welcome,</div>
-          <div class="text-h4 q-mb-lg">
-            {{ user().displayName }}
+          <div class="text-h4 q-mb-sm row justify-between items-center">
+            <span>{{ user().displayName }}</span>
+            <q-btn class="settings-icon" icon="settings" flat round @click="settingsClick()"></q-btn>
           </div>
         </div>
-        <div v-else class="text-h5 q-mb-lg">Welcome,</div>
+        <div v-else class="text-h5 q-mb-sm row justify-between items-center">
+          <span>Welcome,</span>
+          <q-btn class="settings-icon" icon="settings" flat round @click="settingsClick()"></q-btn>
+        </div>
         <ZettelList
           @new-zettel="newZettel = true"
           @delete-zettel="(z) => openDeleteDialog(z)"
@@ -29,6 +33,7 @@
                 rounded
                 ref="inputRef"
                 v-model="newZettelName"
+                :color="$q.dark.isActive ? 'accent' : 'primary'"
                 autofocus
                 label="Name"
                 :rules="[
@@ -39,9 +44,9 @@
               />
             </q-card-section>
 
-            <q-card-actions align="right" class="text-primary">
+            <q-card-actions align="right">
               <q-btn push label="Cancel" @click="cancelAddZettel()" v-close-popup />
-              <q-btn push label="Add" color="primary" @click="addZettel()" />
+              <q-btn push label="Add" :color="$q.dark.isActive ? 'accent' : 'primary'" @click="addZettel()" />
             </q-card-actions>
           </q-card>
         </q-dialog>
@@ -50,7 +55,7 @@
             <q-card-section>
               <div class="text-h6 column">
                 <span>Are you sure you want to delete</span>
-                <span class="text-primary row flex-center">{{ deleteZettelObject.title }}</span>
+                <span class="text-accent row flex-center">{{ deleteZettelObject.title }}</span>
               </div>
             </q-card-section>
             <q-card-actions align="right">
@@ -120,6 +125,10 @@ function deleteZettel(zettelId: string) {
 function openDeleteDialog(zettel: Zettel) {
   deleteZettelObject.value = zettel;
   deleteZettelOpened.value = true;
+}
+
+function settingsClick() {
+  $q.notify('Coming soon!');
 }
 </script>
 

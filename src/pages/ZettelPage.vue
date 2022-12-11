@@ -1,16 +1,15 @@
 <template>
-  <div class="column full-width full-height bg-custom">
-    <div
-      v-if="!zettel.items || zettel.items?.length == 0"
-      class="column flex-center q-pt-lg non-selectable noItems bg-white items-container"
-    >
+  <div class="column full-width full-height items-container bg-white-custom">
+    <div v-if="!zettel.items || zettel.items?.length == 0" class="column flex-center q-pt-lg non-selectable noItems">
       <q-icon name="block" size="60px" />
       <span>No items found.</span>
     </div>
-    <div class="items-container">
-      <div class="zettel-item" v-for="item in zettel.items" :key="item.id">
-        <ZettelItem :item="item" @on-edit="onEdit(item)" @on-delete="(cb) => onRemove(item, cb)" />
-      </div>
+    <div v-else>
+      <TransitionGroup name="list">
+        <div class="zettel-item text-black" v-for="item in sortedItems" :key="item.id">
+          <ZettelItem :item="item" @on-edit="onEdit(item)" @on-delete="(cb) => onRemove(item, cb)" />
+        </div>
+      </TransitionGroup>
     </div>
 
     <!--sticky button-->
@@ -48,7 +47,7 @@
 import ZettelItem from 'src/components/ZettelItem.vue';
 import NewZettelItem from 'src/components/NewZettelItem.vue';
 import { Item, Zettel } from 'src/model/Zettel';
-import { inject, ref, Ref, watch } from 'vue';
+import { computed, inject, ref, Ref, watch } from 'vue';
 import * as ZettelActions from 'assets/ZettelActions';
 import { useUserStore } from 'src/stores/userStore';
 
@@ -64,6 +63,28 @@ const deleteCallback: Ref<() => void> = ref(() => {
 
 const userStore = useUserStore();
 
+const showDone = inject('showDone') as Ref<boolean>;
+const sortBy = inject('sortBy') as Ref<string>;
+
+const sortedItems = computed(() => {
+  if (!zettel.value.items || !zettel.value.items.filter) return [];
+  return zettel.value.items
+    .filter((item) => showDone.value || !item.done)
+    .sort((a, b) => {
+      if (sortBy.value == 'Newest') {
+        return a.date < b.date ? 1 : -1;
+      } else if (sortBy.value == 'Oldest') {
+        return a.date < b.date ? -1 : 1;
+      } else if (sortBy.value == 'A-Z') {
+        return a.name.localeCompare(b.name);
+      } else if (sortBy.value == 'Z-A') {
+        return b.name.localeCompare(a.name);
+      } else {
+        return 0;
+      }
+    });
+});
+
 async function newItem() {
   if (!editing.value) {
     if (userStore.signedIn) {
@@ -74,6 +95,7 @@ async function newItem() {
     } else {
       const newItem = {
         id: ZettelActions.getID(),
+        date: new Date().getTime(),
       } as Item;
       const zettelClone = JSON.parse(JSON.stringify(zettel.value));
       if (!zettelClone.items) zettelClone.items = [];
@@ -132,7 +154,6 @@ function closeDeleteItemDialog() {
   editing.value = false;
   editingItem.value = {} as Item;
   if (firstEditing.value) firstEditing.value = false;
-  deleteCallback.value();
 }
 </script>
 
@@ -157,7 +178,34 @@ function closeDeleteItemDialog() {
 .bg-custom {
   background-color: var(--q-primary);
 }
+.bg-white-custom {
+  background-color: #ffffff;
+}
 .body--dark .bg-custom {
   background-color: #ffffff0c;
+}
+
+.body--dark .bg-white-custom {
+  background-color: var(--q-dark-page);
+}
+
+.list-move,
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.3s;
+}
+
+.list-enter-from {
+  opacity: 0;
+  transform: translateX(-100px);
+}
+
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(100px);
+}
+
+.list-move .list-leave-active {
+  position: absolute;
 }
 </style>

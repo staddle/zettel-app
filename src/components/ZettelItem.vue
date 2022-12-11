@@ -88,7 +88,7 @@ function slideRight({ reset }: { reset: () => void }): void {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .body--dark .done::before {
