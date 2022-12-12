@@ -53,6 +53,9 @@
         <q-separator v-if="signedIn" spaced />
         <q-btn v-if="signedIn" icon="logout" color="accent" push label="Log out" @click="logOut()" style="bottom: 0" />
         <q-separator spaced />
+        <q-btn push label="Imprint" icon="open_in_new" @click="openImprint()" />
+        <q-btn push label="Contact" icon="open_in_new" @click="openContact()" />
+        <q-separator spaced />
         <div class="text-grey-8 text-body2 text-center q-mb-md">
           Made by <a class="text-accent text-bold" href="https://nrosteck.me">staddle</a> | Zettel-App v{{
             versionNumber
@@ -146,6 +149,14 @@ function deleteStoreFromDB() {
   } else {
     removeStoreFromIDB(deleteStoreObject.value).then(closeDeleteDialog);
   }
+}
+
+function openContact() {
+  window.open('https://nrosteck.me', '_blank');
+}
+
+function openImprint() {
+  window.open('https://nrosteck.me/imprint', '_blank');
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
