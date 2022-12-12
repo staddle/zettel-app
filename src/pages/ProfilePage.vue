@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="q-mt-md q-mx-md">
+  <q-page-container>
+    <div class="q-mx-md q-mt-md">
       <span class="text-h4">{{ signedIn ? user.displayName : 'Profile' }}</span>
       <div class="q-mt-md button-group">
         <div>
@@ -53,7 +53,7 @@
         <q-separator v-if="signedIn" spaced />
         <q-btn v-if="signedIn" icon="logout" color="accent" push label="Log out" @click="logOut()" style="bottom: 0" />
         <q-separator spaced />
-        <div class="text-grey-8 text-body2 text-center">
+        <div class="text-grey-8 text-body2 text-center q-mb-md">
           Made by <a class="text-accent text-bold" href="https://nrosteck.me">staddle</a> | Zettel-App v{{
             versionNumber
           }}
@@ -62,7 +62,21 @@
     </div>
     <LogOutDialog :opened="logOutDialogOpened" @close="closeLogOutDialog()" />
     <NewStore :opened="newStoreOpened" @set-opened="(o) => (newStoreOpened = o)" />
-  </div>
+    <q-dialog v-model="deleteDialogOpened">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6 column">
+            <span>Are you sure you want to delete store</span>
+            <span class="text-accent q-pl-md">{{ deleteStoreObject.name }}</span>
+          </div>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" @click="closeDeleteDialog()" />
+          <q-btn label="Delete" color="negative" @click="deleteStoreFromDB()" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+  </q-page-container>
 </template>
 
 <script lang="ts" setup>
@@ -89,6 +103,8 @@ const $q = useQuasar();
 const darkMode = ref($q.dark.isActive);
 const logOutDialogOpened = ref(false);
 const newStoreOpened = ref(false);
+const deleteDialogOpened = ref(false);
+const deleteStoreObject = ref({} as Store);
 
 const versionNumber = ref(globals.version);
 
@@ -114,10 +130,21 @@ function newStore() {
 }
 
 function removeStore(store: Store) {
+  deleteDialogOpened.value = true;
+  deleteStoreObject.value = store;
+  console.log(store);
+}
+
+function closeDeleteDialog() {
+  deleteDialogOpened.value = false;
+  deleteStoreObject.value = {} as Store;
+}
+
+function deleteStoreFromDB() {
   if (signedIn) {
-    deleteUserStore(user.uid, store.id);
+    deleteUserStore(user.uid, deleteStoreObject.value.id).then(closeDeleteDialog);
   } else {
-    removeStoreFromIDB(store);
+    removeStoreFromIDB(deleteStoreObject.value).then(closeDeleteDialog);
   }
 }
 

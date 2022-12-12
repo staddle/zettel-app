@@ -11,18 +11,20 @@
           autofocus
           outlined
           label="Name"
+          :color="$q.dark.isActive ? 'accent' : 'primary'"
           :rules="[(val) => val.length > 0 || 'Please give a name.']"
         />
       </q-card-section>
       <q-card-actions align="right">
         <q-btn push label="Cancel" @click="onReset()" />
-        <q-btn push label="Add" color="primary" @click="onSubmit()" v-close-popup />
+        <q-btn push label="Add" :color="$q.dark.isActive ? 'accent' : 'primary'" @click="onSubmit()" v-close-popup />
       </q-card-actions>
     </q-card>
   </q-dialog>
 </template>
 
 <script lang="ts" setup>
+import { useQuasar } from 'quasar';
 import { addUserStore, addStoreToIDB, getID } from 'src/assets/ZettelActions';
 import { Store } from 'src/model/Zettel';
 import { useUserStore } from 'src/stores/userStore';
@@ -31,6 +33,9 @@ import { ref, toRefs, watch } from 'vue';
 const props = defineProps<{ opened: boolean }>();
 const { opened } = toRefs(props);
 const dialogOpen = ref(opened);
+
+const $q = useQuasar();
+
 watch(opened, (val) => {
   dialogOpen.value = val;
 });
@@ -59,6 +64,7 @@ function onSubmit() {
         name: name.value,
       } as Store).then(onReset);
     }
+    name.value = '';
   }
 }
 
