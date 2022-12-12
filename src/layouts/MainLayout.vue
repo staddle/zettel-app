@@ -50,13 +50,13 @@ onAuthStateChanged(firebaseAuth, (user) => {
 }
 
 .footer-color {
-  background-color: #0000000c;
+  background-color: #f3f3f3;
   color: #777;
 }
 
 .body--dark {
   & .footer-color {
-    background-color: #ffffff0c;
+    background-color: #26282b;
     color: #bbb;
   }
 }
