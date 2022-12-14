@@ -20,7 +20,6 @@
 import { ref } from 'vue';
 import { onAuthStateChanged } from '@firebase/auth';
 import { firebaseAuth } from 'boot/firebase';
-import MainDrawer from 'src/components/MainDrawer.vue';
 import { getAvatar } from 'src/assets/UserActions';
 import { useUserStore } from 'src/stores/userStore';
 
