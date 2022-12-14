@@ -13,6 +13,7 @@
           label="Name"
           :color="$q.dark.isActive ? 'accent' : 'primary'"
           :rules="[(val) => val.length > 0 || 'Please give a name.']"
+          @keyup.prevent.enter="onSubmit()"
         />
       </q-card-section>
       <q-card-actions align="right">

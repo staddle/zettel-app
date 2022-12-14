@@ -7,14 +7,34 @@
       <template v-slot:right>
         <q-icon name="delete" />
       </template>
-      <q-item-section
-        @click="edit"
-        :class="{ done: item.done, 'bg-white': !$q.dark.isActive, 'bg-dark-page': $q.dark.isActive }"
-      >
-        <div class="row q-pa-sm items-center">
-          <div class="title">
-            <span class="text-body1">{{ item.name && item.name != '' ? item.name : 'No Name' }}</span>
-            <span v-if="item.store" class="q-pl-sm store text-body2 text-grey-8">in {{ item.store.name }}</span>
+      <q-item-section :class="{ done: item.done, 'bg-white': !$q.dark.isActive, 'bg-dark-page': $q.dark.isActive }">
+        <div class="row q-pa-sm items-center title q-ml-md">
+          <div class="name text-body1">
+            {{ item.name && item.name != '' ? item.name : 'No Name' }}
+            <q-popup-edit v-model="newName" touch-position auto-save v-slot="scope" @save="(v, iv) => submitNewName(v)">
+              <q-input v-model="scope.value" dense autofocus @keyup.enter="scope.set" label="Name" />
+            </q-popup-edit>
+          </div>
+          <div class="q-pl-sm store text-body2 text-grey-8">
+            in {{ item.store?.name ?? 'No Store' }}
+            <q-popup-edit
+              v-model="newStore"
+              touch-position
+              auto-save
+              v-slot="scope"
+              @save="(v, iv) => submitNewStore(v)"
+            >
+              <q-select
+                v-model="scope.value"
+                :options="stores"
+                option-label="name"
+                label="Store"
+                dense
+                class="q-ml-sm"
+                @popup-hide="scope.set"
+                :color="$q.dark.isActive ? 'accent' : 'primary'"
+              />
+            </q-popup-edit>
           </div>
         </div>
         <q-separator />
@@ -24,8 +44,8 @@
 </template>
 
 <script lang="ts" setup>
-import { deleteItem, markItemDone, updateZettelIDB } from 'src/assets/ZettelActions';
-import { Item, Zettel } from 'src/model/Zettel';
+import { updateItem, markItemDone, updateZettelIDB } from 'src/assets/ZettelActions';
+import { Item, Store, Zettel } from 'src/model/Zettel';
 import { useUserStore } from 'src/stores/userStore';
 import { inject, ref, Ref, toRefs } from 'vue';
 import { useQuasar } from 'quasar';
@@ -33,6 +53,7 @@ import { useQuasar } from 'quasar';
 const props = defineProps<{ item: Item }>();
 const { item } = toRefs(props);
 const zettel: Ref<Zettel> = inject('zettel') as Ref<Zettel>;
+const stores = inject('stores') as Ref<Store[]>;
 const emit = defineEmits<{
   (e: 'onEdit'): void;
   (e: 'onDelete', callback: () => void): void;
@@ -40,6 +61,10 @@ const emit = defineEmits<{
 const $q = useQuasar();
 const deleteItemOpened = ref(false);
 const deleteItemObject = ref({} as Item);
+const editing = ref('');
+const newName = ref(item.value.name);
+const newStore = ref(item.value.store);
+const userStore = useUserStore();
 
 function edit(): void {
   emit('onEdit');
@@ -47,7 +72,7 @@ function edit(): void {
 
 function slideLeft({ reset }: { reset: () => void }): void {
   //mark done
-  if (useUserStore().signedIn) {
+  if (userStore.signedIn) {
     markItemDone(zettel.value.owner, zettel.value.id, item.value.id, !item.value.done).then(reset);
   } else {
     const zettelClone = JSON.parse(JSON.stringify(zettel.value));
@@ -68,14 +93,51 @@ function slideRight({ reset }: { reset: () => void }): void {
   deleteItemObject.value = item.value;
   emit('onDelete', reset);
 }
+
+function submitNewName(newValue: string) {
+  console.log('submitting new name');
+  item.value.name = newValue;
+  if (userStore.signedIn) {
+    updateItem(zettel.value.owner, zettel.value.id, item.value).then(() => {
+      editing.value = '';
+    });
+  } else {
+    const zettelClone = JSON.parse(JSON.stringify(zettel.value));
+    zettelClone.items = zettelClone.items.map((i: Item) => {
+      if (i.id == item.value.id) {
+        i.name = item.value.name;
+      }
+      return i;
+    });
+    updateZettelIDB(zettelClone).then(() => {
+      editing.value = '';
+    });
+  }
+}
+
+function submitNewStore(newValue: Store) {
+  item.value.store = newValue;
+  if (userStore.signedIn) {
+    updateItem(zettel.value.owner, zettel.value.id, item.value).then(() => {
+      editing.value = '';
+    });
+  } else {
+    const zettelClone = JSON.parse(JSON.stringify(zettel.value));
+    const storeClone = JSON.parse(JSON.stringify(newValue));
+    zettelClone.items = zettelClone.items.map((i: Item) => {
+      if (i.id == item.value.id) {
+        i.store = storeClone;
+      }
+      return i;
+    });
+    updateZettelIDB(zettelClone).then(() => {
+      editing.value = '';
+    });
+  }
+}
 </script>
 
 <style lang="scss">
-.title {
-  flex: 1;
-  padding-left: 1rem;
-}
-
 .done {
   .title {
     text-decoration: line-through;
@@ -102,5 +164,10 @@ function slideRight({ reset }: { reset: () => void }): void {
 
 .bg-dark-page {
   background-color: #1b1d21;
+}
+
+.new-name {
+  max-width: min(50%, 10rem);
+  z-index: 2;
 }
 </style>
