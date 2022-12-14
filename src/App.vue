@@ -8,8 +8,6 @@
 
 <script setup lang="ts">
 import { onAuthStateChanged } from '@firebase/auth';
-import { Suspense } from 'vue';
-import { RouterView } from 'vue-router';
 import { firebaseAuth } from './boot/firebase';
 import { useUserStore } from './stores/userStore';
 import { useQuasar } from 'quasar';

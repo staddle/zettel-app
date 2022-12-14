@@ -66,6 +66,7 @@ const newName = ref(item.value.name);
 const newStore = ref(item.value.store);
 const userStore = useUserStore();
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function edit(): void {
   emit('onEdit');
 }

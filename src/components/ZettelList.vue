@@ -50,17 +50,16 @@
 </template>
 
 <script lang="ts" setup>
-import { DataSnapshot, onValue, get, ref as dbRef } from '@firebase/database';
+import { DataSnapshot, onValue, ref as dbRef } from '@firebase/database';
 import { firebaseDatabase as db } from 'boot/firebase';
 import { getUserFromDB } from 'src/assets/UserActions';
-import { deleteZettel, getZettelsFromIDB, onZettelListIDB } from 'src/assets/ZettelActions';
+import { onZettelListIDB } from 'src/assets/ZettelActions';
 import { User } from 'src/model/User';
 import { Zettel } from 'src/model/Zettel';
 import { useUserStore } from 'src/stores/userStore';
 import { onMounted, Ref, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import UserAvatar from './UserAvatar.vue';
-import { useQuasar } from 'quasar';
 
 const router = useRouter();
 onMounted(fetchZettels);

@@ -1,7 +1,6 @@
 import { boot } from 'quasar/wrappers';
 
 const dbName = 'zettels';
-let idb: IDBDatabase;
 let dbPromise: Promise<IDBDatabase>;
 
 export default boot(async (/*{ app }*/) => {
@@ -9,7 +8,7 @@ export default boot(async (/*{ app }*/) => {
   request.onerror = (event) => {
     console.log('Error opening database', event);
   };
-  dbPromise = new Promise((resolve, reject) => {
+  dbPromise = new Promise((resolve) => {
     request.onupgradeneeded = (event) => {
       const localDB = event.target.result as IDBDatabase;
       const tx = event.target.transaction as IDBTransaction;
@@ -30,9 +29,6 @@ export default boot(async (/*{ app }*/) => {
     request.onsuccess = (event) => {
       resolve(event.target.result as IDBDatabase);
     };
-  });
-  dbPromise.then((db) => {
-    idb = db;
   });
 });
 

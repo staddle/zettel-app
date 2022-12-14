@@ -47,7 +47,7 @@
 import ZettelItem from 'src/components/ZettelItem.vue';
 import NewZettelItem from 'src/components/NewZettelItem.vue';
 import { Item, Zettel } from 'src/model/Zettel';
-import { computed, inject, ref, Ref, watch } from 'vue';
+import { computed, inject, ref, Ref } from 'vue';
 import * as ZettelActions from 'assets/ZettelActions';
 import { useUserStore } from 'src/stores/userStore';
 
