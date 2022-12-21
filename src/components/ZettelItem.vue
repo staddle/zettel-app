@@ -14,27 +14,33 @@
             <q-popup-edit v-model="newName" touch-position auto-save v-slot="scope" @save="(v, iv) => submitNewName(v)">
               <q-input v-model="scope.value" dense autofocus @keyup.enter="scope.set" label="Name" />
             </q-popup-edit>
-          </div>
-          <div class="q-pl-sm store text-body2 text-grey-8">
-            in {{ item.store?.name ?? 'No Store' }}
-            <q-popup-edit
-              v-model="newStore"
-              touch-position
-              auto-save
-              v-slot="scope"
-              @save="(v, iv) => submitNewStore(v)"
-            >
-              <q-select
-                v-model="scope.value"
-                :options="stores"
-                option-label="name"
-                label="Store"
-                dense
-                class="q-ml-sm"
-                @popup-hide="scope.set"
-                :color="$q.dark.isActive ? 'accent' : 'primary'"
-              />
-            </q-popup-edit>
+            <div class="q-pl-xs store text-body2 text-grey-8 inline-block">
+              in {{ item.store?.name ?? 'No Store' }}
+              <q-popup-edit
+                v-model="newStore"
+                touch-position
+                auto-save
+                v-slot="scope"
+                @save="(v, iv) => submitNewStore(v)"
+              >
+                <q-select
+                  v-model="scope.value"
+                  :options="stores"
+                  option-label="name"
+                  label="Store"
+                  dense
+                  use-input
+                  @popup-hide="scope.set"
+                  :color="$q.dark.isActive ? 'accent' : 'primary'"
+                >
+                  <template v-slot:no-option>
+                    <q-item>
+                      <q-item-section class="text-italic text-grey"> No stores available </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
+              </q-popup-edit>
+            </div>
           </div>
         </div>
         <q-separator />
